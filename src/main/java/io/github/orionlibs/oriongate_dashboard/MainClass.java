@@ -1,5 +1,6 @@
-package io.github.orionlibs.oriongate_dashboard.testapp;
+package io.github.orionlibs.oriongate_dashboard;
 
+import io.github.orionlibs.oriongate_dashboard.tools.HomePage;
 import javax.swing.SwingUtilities;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class Testapp1
+public class MainClass
 {
     public static void main(String[] args)
     {
@@ -19,8 +20,8 @@ public class Testapp1
             @Override
             public void run()
             {
-                ApplicationFrame mainFrame = new ApplicationFrame();
-                mainFrame.setVisible(true);
+                HomePage homePage = new HomePage();
+                homePage.setVisible(true);
             }
         });
     }

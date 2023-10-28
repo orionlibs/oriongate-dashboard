@@ -1,4 +1,4 @@
-package io.github.orionlibs.oriongate_dashboard.testapp;
+package io.github.orionlibs.oriongate_dashboard.tools;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import netscape.javascript.JSObject;
 
-public class ApplicationFrame extends JFrame
+public class TestPage extends JFrame
 {
     JFXPanel javafxPanel;
     WebView webComponent;
@@ -23,7 +23,7 @@ public class ApplicationFrame extends JFrame
     //JButton goButton;
 
 
-    public ApplicationFrame()
+    public TestPage()
     {
         javafxPanel = new JFXPanel();
         initSwingComponents();

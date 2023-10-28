@@ -1,4 +1,4 @@
-package io.github.orionlibs.oriongate_dashboard.testapp.config;
+package io.github.orionlibs.oriongate_dashboard.config;
 
 /**
  * provides access to the plugin's config
