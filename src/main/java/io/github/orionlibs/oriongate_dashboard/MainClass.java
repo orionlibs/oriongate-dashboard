@@ -1,6 +1,7 @@
 package io.github.orionlibs.oriongate_dashboard;
 
-import io.github.orionlibs.oriongate_dashboard.tools.HomePage;
+import io.github.orionlibs.oriongate_dashboard.tools.home.HomePage;
+import java.io.IOException;
 import javax.swing.SwingUtilities;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,8 +21,16 @@ public class MainClass
             @Override
             public void run()
             {
-                HomePage homePage = new HomePage();
-                homePage.setVisible(true);
+                HomePage homePage = null;
+                try
+                {
+                    homePage = new HomePage();
+                    homePage.setVisible(true);
+                }
+                catch(IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

@@ -1,29 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <body>
         <input type="text" id="input_1" value="value 0"/>
         <button id='myButton' onclick='myFunction()'>Click Me</button>
 
 
         <script>
-                function myFunction()
-                {
-                    document.getElementById("input_1").value = "value 2";
-                    //document.getElementById("input_1").value = javaApp.myJavaMethod1("hello");
-                    javaApp.myJavaMethod1("hello");
-                }
+            function myFunction()
+            {
+                logger.log("JavaScript called Java logger");
+                homeService.myJavaMethod1();
+                document.getElementById("input_1").value = "value 2";
+            }
 
 
-                function myFunction2()
-                {
-                    //document.getElementById("input_1").value = "value 3";
-                }
-
-
-                function myFunction3(message)
-                {
-                    document.getElementById("input_1").value = message;
-                }
+            function myFunction2(message)
+            {
+                document.getElementById("input_1").value = message;
+            }
         </script>
     </body>
 </html>
