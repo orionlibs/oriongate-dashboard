@@ -124,8 +124,8 @@ public class ApplicationFrame extends JFrame
         {
             System.out.println("Java method called from JavaScript! " + message);
             // Call the JavaScript function
-            webEngine.executeScript("myFunction2()");
-            //webEngine.executeScript("myFunction2(value 3)");
+            //webEngine.executeScript("myFunction2()");
+            webEngine.executeScript("myFunction3(\"value 4\")");
             return 64;
         }
     }
