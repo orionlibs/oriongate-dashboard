@@ -2,19 +2,23 @@
 <html lang="en">
     <body>
         <input type="text" id="input_1" value="value 0"/>
-        <input type="text" id="input_2" value=""/>
         <button id='myButton' onclick='myFunction()'>Click Me</button>
 
 
         <script>
-            document.getElementById("input_2").value = "initial value";
-
-
             function myFunction()
             {
-                logger.log("JavaScript called Java logger");
-                logger.logError("JavaScript called Java error logger");
-                document.getElementById("input_1").value = homeService.myJavaMethod1("hello");
+                logger.info("JavaScript called Java logger");
+                logger.error("JavaScript called Java error logger");
+
+                try
+                {
+                    homeService.myJavaMethod1("hello");
+                }
+                catch(error)
+                {
+                    logger.error(error.message);
+                }
             }
         </script>
     </body>

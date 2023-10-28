@@ -27,13 +27,19 @@ public class FrontEndLogger
     }
 
 
-    public void log(String message)
+    public void info(String message)
     {
         log.info(message);
     }
 
 
-    public void logError(String message)
+    public void warning(String message)
+    {
+        log.warning(message);
+    }
+
+
+    public void error(String message)
     {
         log.severe(message);
     }

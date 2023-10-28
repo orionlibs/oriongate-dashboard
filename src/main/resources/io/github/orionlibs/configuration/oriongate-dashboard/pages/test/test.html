@@ -12,8 +12,8 @@
 
             function myFunction()
             {
-                logger.log("JavaScript called Java logger");
-                logger.logError("JavaScript called Java error logger");
+                logger.info("JavaScript called Java logger");
+                logger.error("JavaScript called Java error logger");
                 document.getElementById("input_1").value = homeService.myJavaMethod1("hello");
             }
         </script>

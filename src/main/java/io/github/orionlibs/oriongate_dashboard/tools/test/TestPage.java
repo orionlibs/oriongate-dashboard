@@ -19,14 +19,12 @@ public class TestPage extends Page
 
     public TestPage() throws IOException
     {
-        super("/io/github/orionlibs/configuration/oriongate-dashboard/pages/test/test.html", variableNamesToObjectsMapperToSetInJavaScript);
-        initialiseJavaScriptVariables();
+        super("/io/github/orionlibs/configuration/oriongate-dashboard/pages/home/home.html", variableNamesToObjectsMapperToSetInJavaScript);
     }
 
 
     private static void initialiseJavaScriptVariables()
     {
         homeService = new TestService();
-        //homeService = new HomeService(webEngine);
     }
 }
