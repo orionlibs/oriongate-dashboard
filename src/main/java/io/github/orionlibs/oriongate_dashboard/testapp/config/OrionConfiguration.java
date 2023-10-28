@@ -16,7 +16,7 @@ public class OrionConfiguration extends Properties
     /**
      * The location of the configuration file that has configuration for the features of this plugin.
      */
-    public static final String FEATURE_CONFIGURATION_FILE = "/io/github/orionlibs/oriongate-dashboard/configuration/orion-feature-configuration.prop";
+    public static final String FEATURE_CONFIGURATION_FILE = "/io/github/orionlibs/configuration/oriongate-dashboard/orion-feature-configuration.prop";
 
 
     public static OrionConfiguration loadFeatureConfiguration() throws IOException
