@@ -15,6 +15,7 @@ public class Page extends JFrame
 {
     public static JavaScriptConsoleListener javaScriptConsoleListener;
     public static JFXPanel javafxPanel;
+    public static String pageTitle = "OrionGate";
     private JPanel mainPanel;
     private String pagePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
@@ -36,6 +37,7 @@ public class Page extends JFrame
 
     private void initSwingComponents() throws IOException
     {
+        setTitle(pageTitle);
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(javafxPanel, BorderLayout.CENTER);
