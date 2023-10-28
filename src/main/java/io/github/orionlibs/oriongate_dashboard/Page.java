@@ -38,6 +38,7 @@ public class Page extends JFrame
     private void initSwingComponents() throws IOException
     {
         setTitle(pageTitle);
+        setLocationByPlatform(true);
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(javafxPanel, BorderLayout.CENTER);

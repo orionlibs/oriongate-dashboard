@@ -4,7 +4,7 @@
   xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.orionlibs</groupId>
-    <artifactId>testapp</artifactId>
+    <artifactId>oriongate-dashboard</artifactId>
     <version>0.0.1</version>
     <name>OrionGate Dashboard</name>
     <description>A desktop application with a dashboard and tools monitoring various activities.</description>
@@ -51,7 +51,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <mainClass>Testapp1</mainClass>
+                    <mainClass>MainClass</mainClass>
                 </configuration>
             </plugin>
 

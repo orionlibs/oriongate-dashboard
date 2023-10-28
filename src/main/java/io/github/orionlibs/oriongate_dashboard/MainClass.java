@@ -14,6 +14,7 @@ public class MainClass
     static
     {
         applicationPath = new File(MainClass.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath();
+        applicationPath = applicationPath.replace("\\", "/");
     }
 
     public static void main(String[] args)
