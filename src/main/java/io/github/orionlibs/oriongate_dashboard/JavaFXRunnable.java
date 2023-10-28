@@ -31,7 +31,7 @@ public class JavaFXRunnable implements Runnable
         WebView webComponent = new WebView();
         WebEngine webEngine = webComponent.getEngine();
         webEngine.setJavaScriptEnabled(true);
-        webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.logError("front-end error: " + event.getData()));
+        webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
         try
         {
