@@ -1,1 +1,19 @@
-build main dashboard that shows system information
+Make sure the installer creates a permanent env var that has the installation path so that java can access it. If this var doesn't exist, then it will use the resources folder.
+
+Allow user to set a custom database URL in case they want to use a remote one.
+
+Create top navbar with OrionGate logo, settings button, tools button, terminal button, system info button.
+
+Create sidebar with tools.
+
+The logo button opens the homepage that shows the stats dashboard.
+
+The system info page shows system info.
+
+The settings page shows settings like notifications, project settings, database settings. Settings will be saved in SQLite.
+
+The tools page shows all tools.
+
+The terminal page shows command line.
+
+The project tool page shows existing projects and create/delete.

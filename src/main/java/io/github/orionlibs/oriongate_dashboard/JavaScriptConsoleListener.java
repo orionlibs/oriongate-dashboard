@@ -1,4 +1,4 @@
-package io.github.orionlibs.oriongate_dashboard.tools.home;
+package io.github.orionlibs.oriongate_dashboard;
 
 public class JavaScriptConsoleListener
 {
