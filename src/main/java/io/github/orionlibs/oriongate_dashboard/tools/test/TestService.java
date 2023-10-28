@@ -1,7 +1,7 @@
-package io.github.orionlibs.oriongate_dashboard.tools.home;
+package io.github.orionlibs.oriongate_dashboard.tools.test;
 
 //Java class that can be accessed from JavaScript
-public class HomeService
+public class TestService
 {
     public String myJavaMethod1(String message)
     {

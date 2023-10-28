@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class Page extends JFrame
 {
-    public static JavaScriptConsoleListener javaScriptConsoleListener;
+    public static FrontEndLogger javaScriptConsoleListener;
     public static JFXPanel javafxPanel;
     public static String pageTitle = "OrionGate";
     private JPanel mainPanel;
@@ -23,7 +23,7 @@ public class Page extends JFrame
     static
     {
         javafxPanel = new JFXPanel();
-        javaScriptConsoleListener = new JavaScriptConsoleListener();
+        javaScriptConsoleListener = new FrontEndLogger();
     }
 
     public Page(String pagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
@@ -44,7 +44,7 @@ public class Page extends JFrame
         this.add(mainPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1920, 1080);
-        InputStream logo = Page.class.getResourceAsStream("/io/github/orionlibs/configuration/oriongate-dashboard/pages/images/logo.png");
+        InputStream logo = Page.class.getResourceAsStream("/io/github/orionlibs/configuration/oriongate-dashboard/images/logo.png");
         ImageIcon icon = new ImageIcon(ImageIO.read(logo));
         this.setIconImage(icon.getImage());
     }

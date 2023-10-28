@@ -13,7 +13,7 @@ public class MainClass
 
     static
     {
-        applicationPath = new File(Setup.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath();
+        applicationPath = new File(MainClass.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath();
     }
 
     public static void main(String[] args)

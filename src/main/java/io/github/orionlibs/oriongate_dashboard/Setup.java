@@ -1,6 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard;
 
-import io.github.orionlibs.oriongate_dashboard.tools.home.HomePage;
+import io.github.orionlibs.oriongate_dashboard.tools.test.TestPage;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
 
@@ -15,7 +15,7 @@ public class Setup
             {
                 try
                 {
-                    HomePage homePage = new HomePage();
+                    TestPage homePage = new TestPage();
                     homePage.setVisible(true);
                 }
                 catch(IOException e)

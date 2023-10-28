@@ -1,13 +1,13 @@
-package io.github.orionlibs.oriongate_dashboard.tools.home;
+package io.github.orionlibs.oriongate_dashboard.tools.test;
 
 import io.github.orionlibs.oriongate_dashboard.Page;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomePage extends Page
+public class TestPage extends Page
 {
-    private static HomeService homeService;
+    private static TestService homeService;
     private static Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
 
     static
@@ -17,16 +17,16 @@ public class HomePage extends Page
         variableNamesToObjectsMapperToSetInJavaScript.put("homeService", homeService);
     }
 
-    public HomePage() throws IOException
+    public TestPage() throws IOException
     {
-        super("/io/github/orionlibs/configuration/oriongate-dashboard/pages/home/home.html", variableNamesToObjectsMapperToSetInJavaScript);
+        super("/io/github/orionlibs/configuration/oriongate-dashboard/pages/test/test.html", variableNamesToObjectsMapperToSetInJavaScript);
         initialiseJavaScriptVariables();
     }
 
 
     private static void initialiseJavaScriptVariables()
     {
-        homeService = new HomeService();
+        homeService = new TestService();
         //homeService = new HomeService(webEngine);
     }
 }
