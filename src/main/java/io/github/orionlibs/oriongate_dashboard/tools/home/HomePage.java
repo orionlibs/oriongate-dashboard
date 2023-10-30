@@ -7,6 +7,6 @@ public class HomePage extends Page
 {
     public HomePage() throws IOException
     {
-        super("/io/github/orionlibs/configuration/oriongate-dashboard/pages/home/home.html", null);
+        super("/configuration/pages/home/home.html", null);
     }
 }

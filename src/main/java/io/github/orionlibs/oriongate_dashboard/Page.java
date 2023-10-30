@@ -45,7 +45,7 @@ public class Page extends JFrame
         this.add(mainPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1920, 1080);
-        InputStream logo = Page.class.getResourceAsStream("/io/github/orionlibs/configuration/oriongate-dashboard/images/logo.png");
+        InputStream logo = Page.class.getResourceAsStream("/configuration/images/logo.png");
         ImageIcon icon = new ImageIcon(ImageIO.read(logo));
         this.setIconImage(icon.getImage());
     }
