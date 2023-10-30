@@ -4,9 +4,25 @@
 <head>
     <base href="@@base-path@@"/>
     <meta charset="utf-8">
+    <link href="../../plugins/notifications/css/lobibox.min.css" rel="stylesheet" />
     <link href="../../plugins/simplebar/css/simplebar.css" rel="stylesheet"/>
+    <link href="../../plugins/datetimepicker/css/classic.css" rel="stylesheet" />
+    <link href="../../plugins/datetimepicker/css/classic.time.css" rel="stylesheet" />
+    <link href="../../plugins/datetimepicker/css/classic.date.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../../plugins/input-tags/css/tagsinput.css" rel="stylesheet" />
+    <link href="../../plugins/fullcalendar/css/main.min.css" rel="stylesheet" />
+    <link href="../../plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="../../plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
+    <link href="../../plugins/fancy-file-uploader/fancy_fileupload.css" rel="stylesheet" />
+    <link href="../../plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
     <link href="../../plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet"/>
     <link href="../../plugins/metismenu/css/metisMenu.min.css" rel="stylesheet"/>
+    <link href="../../plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="../../plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+    <link href="../../plugins/highcharts/css/highcharts-white.css" rel="stylesheet" />
+    <link href="../../plugins/smart-wizard/css/smart_wizard_all.min.css" rel="stylesheet" type="text/css" />
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="../../css/app.css" rel="stylesheet">
@@ -184,8 +200,58 @@
 <script src="../../js/bootstrap.bundle.min.js"></script>
 <script src="../../js/jquery.min.js"></script>
 <script src="../../plugins/simplebar/js/simplebar.min.js"></script>
+<script src="assets/plugins/input-tags/js/tagsinput.js"></script>
+<script src="assets/plugins/fullcalendar/js/main.min.js"></script>
 <script src="../../plugins/metismenu/js/metisMenu.min.js"></script>
 <script src="../../plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
+<script src="https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js" referrerpolicy="origin">
+<script src="assets/plugins/smart-wizard/js/jquery.smartWizard.min.js"></script>
+<script src="assets/plugins/select2/js/select2.min.js"></script>
+<script src="assets/plugins/datetimepicker/js/legacy.js"></script>
+<script src="assets/plugins/datetimepicker/js/picker.js"></script>
+<script src="assets/plugins/datetimepicker/js/picker.time.js"></script>
+<script src="assets/plugins/datetimepicker/js/picker.date.js"></script>
+<script src="assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js"></script>
+<script src="assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js"></script>
+<script src="assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+<script src="assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+<script src="assets/plugins/notifications/js/lobibox.min.js"></script>
+<script src="assets/plugins/notifications/js/notifications.min.js"></script>
+<script src="assets/plugins/notifications/js/notification-custom-script.js"></script>
+<script src="assets/plugins/chartjs/js/Chart.min.js"></script>
+<script src="assets/plugins/chartjs/js/chartjs-custom.js"></script>
+<script src="../../plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
+<script src="assets/plugins/apexcharts-bundle/js/apex-custom.js"></script>
+<script src="assets/plugins/highcharts/js/highcharts.js"></script>
+<script src="assets/plugins/highcharts/js/highcharts-more.js"></script>
+<script src="assets/plugins/highcharts/js/variable-pie.js"></script>
+<script src="assets/plugins/highcharts/js/solid-gauge.js"></script>
+<script src="assets/plugins/highcharts/js/highcharts-3d.js"></script>
+<script src="assets/plugins/highcharts/js/cylinder.js"></script>
+<script src="assets/plugins/highcharts/js/funnel3d.js"></script>
+<script src="assets/plugins/highcharts/js/exporting.js"></script>
+<script src="assets/plugins/highcharts/js/export-data.js"></script>
+<script src="assets/plugins/highcharts/js/accessibility.js"></script>
+<script src="assets/plugins/highcharts/js/highcharts-custom.script.js"></script>
+<script src="assets/js/dashboard-digital-marketing.js"></script>
+<script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+<script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+<script src="assets/plugins/fancy-file-uploader/jquery.ui.widget.js"></script>
+<script src="assets/plugins/fancy-file-uploader/jquery.fileupload.js"></script>
+<script src="assets/plugins/fancy-file-uploader/jquery.iframe-transport.js"></script>
+<script src="assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js"></script>
+<script src="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+<script src="assets/plugins/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+<script src="assets/plugins/sparkline-charts/jquery.sparkline.min.js"></script>
+<script src="assets/plugins/jquery-knob/excanvas.js"></script>
+<script src="assets/plugins/jquery-knob/jquery.knob.js"></script>
+<script src="../../js/widgets.js"></script>
+<script src="assets/js/dashboard-alternate.js"></script>
+<script src="assets/js/dashboard-analytics.js"></script>
+<script src="assets/js/dashboard-eCommerce.js"></script>
+<script src="assets/js/dashboard-human-resources.js"></script>
+<script src="assets/js/dashboard-sales.js"></script>
 <script src="../../js/app.js"></script>
 </body>
 </html>
