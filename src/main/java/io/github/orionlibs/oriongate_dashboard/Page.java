@@ -16,6 +16,8 @@ public class Page extends JFrame
     public static FrontEndLogger javaScriptConsoleListener;
     public static JFXPanel javafxPanel;
     public static String pageTitle = "OrionGate";
+    public static String headerImportsFilePathToLoad = "/configuration/pages/common/header-imports.html";
+    public static String javascriptImportsFilePathToLoad = "/configuration/pages/common/javascript-imports.html";
     private JPanel mainPanel;
     private String pagePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
@@ -60,6 +62,6 @@ public class Page extends JFrame
 
     private void loadJavaFXScene()
     {
-        Platform.runLater(new JavaFXRunnable(pagePathToLoad, variableNamesToObjectsMapperToSetInJavaScript));
+        Platform.runLater(new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript));
     }
 }

@@ -15,12 +15,16 @@ import netscape.javascript.JSObject;
 public class JavaFXRunnable implements Runnable
 {
     private String pagePathToLoad;
+    private String headerImportsFilePathToLoad;
+    private String javascriptImportsFilePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
 
 
-    public JavaFXRunnable(String pagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
+    public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
     {
         this.pagePathToLoad = pagePathToLoad;
+        this.headerImportsFilePathToLoad = headerImportsFilePathToLoad;
+        this.javascriptImportsFilePathToLoad = javascriptImportsFilePathToLoad;
         this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
     }
 
@@ -35,10 +39,16 @@ public class JavaFXRunnable implements Runnable
         webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
         webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
+        InputStream headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
+        InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
         try
         {
             String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
+            String headerImportsHTMLContent = new String(headerImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
+            String javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
             htmlContent = htmlContent.replace("@@base-path@@", Utils.getAbsolutePathOfResourceFile(pagePathToLoad));
+            htmlContent = htmlContent.replace("@@header-imports@@", headerImportsHTMLContent);
+            htmlContent = htmlContent.replace("@@javascript-imports@@", javascriptImportsHTMLContent);
             webEngine.loadContent(htmlContent);
             borderPane.setCenter(webComponent);
             Scene scene = new Scene(borderPane, 1920, 1080);
