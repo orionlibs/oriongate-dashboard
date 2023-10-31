@@ -46,6 +46,12 @@ public class Page extends JFrame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setSize(1920, 1080);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLogo();
+    }
+
+
+    private void setLogo() throws IOException
+    {
         InputStream logo = Page.class.getResourceAsStream("/configuration/images/logo.png");
         ImageIcon icon = new ImageIcon(ImageIO.read(logo));
         this.setIconImage(icon.getImage());

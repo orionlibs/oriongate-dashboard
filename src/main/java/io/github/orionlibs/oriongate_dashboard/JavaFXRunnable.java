@@ -55,6 +55,7 @@ public class JavaFXRunnable implements Runnable
                             {
                                 //we get a reference to the DOM's window variable
                                 JSObject window = (JSObject)webEngine.executeScript("window");
+                                //set variables inside JavaScript
                                 window.setMember("logger", Page.javaScriptConsoleListener);
                                 if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
                                 {

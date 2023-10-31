@@ -13,6 +13,7 @@ public class MainClass
 
     static
     {
+        //determines the actual path of the executing JAR file for this application.
         applicationPath = new File(MainClass.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath();
         applicationPath = applicationPath.replace("\\", "/");
     }
