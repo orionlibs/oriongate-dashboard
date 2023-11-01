@@ -1,6 +1,9 @@
 package io.github.orionlibs.oriongate_dashboard;
 
+import io.github.orionlibs.oriongate_dashboard.config.ConfigurationService;
+import io.github.orionlibs.oriongate_dashboard.config.OrionConfiguration;
 import java.io.File;
+import java.io.IOException;
 
 //@NoArgsConstructor
 //@AllArgsConstructor
@@ -9,6 +12,7 @@ import java.io.File;
 //@Setter
 public class MainClass
 {
+    public static ConfigurationService config;
     public static String applicationPath;
 
     static
@@ -18,8 +22,16 @@ public class MainClass
         applicationPath = applicationPath.replace("\\", "/");
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         Setup.loadHomePage();
+        config = new ConfigurationService();
+        setupConfiguration();
+    }
+
+
+    private static void setupConfiguration() throws IOException
+    {
+        config.registerConfiguration(OrionConfiguration.loadFeatureConfiguration());
     }
 }
