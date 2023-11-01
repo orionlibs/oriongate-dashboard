@@ -20,6 +20,7 @@ public class Page extends JFrame
     public static String javascriptImportsFilePathToLoad = "/configuration/pages/common/javascript-imports.html";
     public static String logoFilePathToLoad = "/configuration/pages/common/logo.html";
     public static String sidebarFilePathToLoad = "/configuration/pages/common/sidebar.html";
+    public static String topnavbarFilePathToLoad = "/configuration/pages/common/topnavbar.html";
     private JPanel mainPanel;
     private String pagePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
@@ -64,6 +65,6 @@ public class Page extends JFrame
 
     private void loadJavaFXScene()
     {
-        Platform.runLater(new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript));
+        Platform.runLater(new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript));
     }
 }

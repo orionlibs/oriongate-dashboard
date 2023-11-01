@@ -19,16 +19,18 @@ public class JavaFXRunnable implements Runnable
     private String javascriptImportsFilePathToLoad;
     private String logoFilePathToLoad;
     private String sidebarFilePathToLoad;
+    private String topnavbarFilePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
 
 
-    public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
+    public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
     {
         this.pagePathToLoad = pagePathToLoad;
         this.headerImportsFilePathToLoad = headerImportsFilePathToLoad;
         this.javascriptImportsFilePathToLoad = javascriptImportsFilePathToLoad;
         this.logoFilePathToLoad = logoFilePathToLoad;
         this.sidebarFilePathToLoad = sidebarFilePathToLoad;
+        this.topnavbarFilePathToLoad = topnavbarFilePathToLoad;
         this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
     }
 
@@ -47,6 +49,7 @@ public class JavaFXRunnable implements Runnable
         InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
         InputStream logoHTML = JavaFXRunnable.class.getResourceAsStream(logoFilePathToLoad);
         InputStream sidebarHTML = JavaFXRunnable.class.getResourceAsStream(sidebarFilePathToLoad);
+        InputStream topnavbarHTML = JavaFXRunnable.class.getResourceAsStream(topnavbarFilePathToLoad);
         try
         {
             String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
@@ -54,12 +57,14 @@ public class JavaFXRunnable implements Runnable
             String javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
             String logoHTMLContent = new String(logoHTML.readAllBytes(), Charset.forName("UTF-8"));
             String sidebarHTMLContent = new String(sidebarHTML.readAllBytes(), Charset.forName("UTF-8"));
+            String topnavbarHTMLContent = new String(topnavbarHTML.readAllBytes(), Charset.forName("UTF-8"));
             htmlContent = htmlContent.replace("@@base-path@@", Utils.getAbsolutePathOfResourceFile(pagePathToLoad));
             htmlContent = htmlContent.replace("@@header-imports@@", headerImportsHTMLContent);
             htmlContent = htmlContent.replace("@@javascript-imports@@", javascriptImportsHTMLContent);
             htmlContent = htmlContent.replace("@@theme@@", MainClass.config.getProp("theme.default"));
             htmlContent = htmlContent.replace("@@logo@@", logoHTMLContent);
             htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
+            htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
             webEngine.loadContent(htmlContent);
             borderPane.setCenter(webComponent);
             Scene scene = new Scene(borderPane, 1920, 1080);
