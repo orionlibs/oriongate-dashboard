@@ -6,6 +6,9 @@ import javax.swing.SwingUtilities;
 
 public class Setup
 {
+    private static HomePage homePage;
+
+
     public static void loadHomePage()
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -15,7 +18,7 @@ public class Setup
             {
                 try
                 {
-                    HomePage homePage = new HomePage();
+                    homePage = new HomePage();
                     homePage.setVisible(true);
                     //TestPage homePage = new TestPage();
                     //homePage.setVisible(true);
@@ -26,5 +29,11 @@ public class Setup
                 }
             }
         });
+    }
+
+
+    public static void loadHome2Page()
+    {
+        //homePage.loadHome2Page();
     }
 }

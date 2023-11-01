@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 public class Page extends JFrame
 {
     public static FrontEndLogger javaScriptConsoleListener;
+    public static PageLoader pageLoader;
     public static JFXPanel javafxPanel;
     public static String pageTitle = "OrionGate";
     public static String headerImportsFilePathToLoad = "/configuration/pages/common/header-imports.html";
@@ -29,6 +30,7 @@ public class Page extends JFrame
     {
         javafxPanel = new JFXPanel();
         javaScriptConsoleListener = new FrontEndLogger();
+        pageLoader = new PageLoader();
     }
 
     public Page(String pagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException

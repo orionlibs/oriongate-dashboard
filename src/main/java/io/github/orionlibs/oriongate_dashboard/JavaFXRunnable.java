@@ -65,7 +65,7 @@ public class JavaFXRunnable implements Runnable
             htmlContent = htmlContent.replace("@@logo@@", logoHTMLContent);
             htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
             htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
-            htmlContent = htmlContent.replace("@@copyright-year@@", Integer.toString(Utils.getCurrentYear()));
+            htmlContent = htmlContent.replace("@@current-year@@", Integer.toString(Utils.getCurrentYear()));
             webEngine.loadContent(htmlContent);
             borderPane.setCenter(webComponent);
             Scene scene = new Scene(borderPane, 1920, 1080);
@@ -84,6 +84,7 @@ public class JavaFXRunnable implements Runnable
                                 JSObject window = (JSObject)webEngine.executeScript("window");
                                 //set variables inside JavaScript
                                 window.setMember("logger", Page.javaScriptConsoleListener);
+                                window.setMember("pageLoader", Page.pageLoader);
                                 if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
                                 {
                                     for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
