@@ -15,3 +15,34 @@ The tools page shows all tools.
 The terminal page shows command line.
 
 The project tool page shows existing projects and create/delete.
+
+https://github.com/getstation/desktop-app
+https://github.com/electron/apps/tree/main/apps
+System info in the home page. CPU, ram, storage, network, os version, etc.
+
+https://chat.openai.com/c/a4fa7a83-e260-40b8-a6bf-1f54bea4c49b
+
+Besides apps, create a list of reusable features that many apps or all can have like notifications. Check the features of MS office. Check https://bootsnipp.com/tags
+
+https://www.proofhub.com/articles/best-productivity-tools
+
+https://www.proofhub.com/features
+https://www.ntaskmanager.com/
+https://ganttpro.com/ganttpro-features/
+https://www.calendar.com/
+https://www.hubspot.com/
+https://clean.email/
+https://www.rightinbox.com/
+https://tryshift.com/
+https://fleep.io/
+https://bit.ai/
+List of google apps
+https://www.timedoctor.com/blog/toggl-review/
+Paymo
+Evernote
+Simplenote
+JIRA
+
+https://en.wikipedia.org/wiki/Control_Panel_(Windows)
+https://4sysops.com/wiki/list-of-ms-settings-uri-commands-to-open-specific-settings-in-windows-10/
+https://learn.microsoft.com/en-us/windows/win32/apiindex/windows-api-list
