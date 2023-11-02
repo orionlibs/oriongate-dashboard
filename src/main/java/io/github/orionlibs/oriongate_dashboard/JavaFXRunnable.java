@@ -27,6 +27,16 @@ public class JavaFXRunnable implements Runnable
     private int frameHeight;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
     private Group sceneContainer = new Group();
+    private InputStream headerImportsHTML;
+    private InputStream javascriptImportsHTML;
+    private InputStream logoHTML;
+    private InputStream sidebarHTML;
+    private InputStream topnavbarHTML;
+    private String headerImportsHTMLContent;
+    private String javascriptImportsHTMLContent;
+    private String logoHTMLContent;
+    private String sidebarHTMLContent;
+    private String topnavbarHTMLContent;
 
 
     public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
@@ -49,19 +59,19 @@ public class JavaFXRunnable implements Runnable
     public void run()
     {
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
-        InputStream headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
-        InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
-        InputStream logoHTML = JavaFXRunnable.class.getResourceAsStream(logoFilePathToLoad);
-        InputStream sidebarHTML = JavaFXRunnable.class.getResourceAsStream(sidebarFilePathToLoad);
-        InputStream topnavbarHTML = JavaFXRunnable.class.getResourceAsStream(topnavbarFilePathToLoad);
+        headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
+        javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
+        logoHTML = JavaFXRunnable.class.getResourceAsStream(logoFilePathToLoad);
+        sidebarHTML = JavaFXRunnable.class.getResourceAsStream(sidebarFilePathToLoad);
+        topnavbarHTML = JavaFXRunnable.class.getResourceAsStream(topnavbarFilePathToLoad);
         try
         {
             String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String headerImportsHTMLContent = new String(headerImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String logoHTMLContent = new String(logoHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String sidebarHTMLContent = new String(sidebarHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String topnavbarHTMLContent = new String(topnavbarHTML.readAllBytes(), Charset.forName("UTF-8"));
+            headerImportsHTMLContent = new String(headerImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
+            javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
+            logoHTMLContent = new String(logoHTML.readAllBytes(), Charset.forName("UTF-8"));
+            sidebarHTMLContent = new String(sidebarHTML.readAllBytes(), Charset.forName("UTF-8"));
+            topnavbarHTMLContent = new String(topnavbarHTML.readAllBytes(), Charset.forName("UTF-8"));
             htmlContent = htmlContent.replace("@@base-path@@", Utils.getAbsolutePathOfResourceFile(pagePathToLoad));
             htmlContent = htmlContent.replace("@@header-imports@@", headerImportsHTMLContent);
             htmlContent = htmlContent.replace("@@javascript-imports@@", javascriptImportsHTMLContent);
@@ -114,19 +124,9 @@ public class JavaFXRunnable implements Runnable
     {
         setPagePathToLoad(newPagePathToLoad);
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
-        InputStream headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
-        InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
-        InputStream logoHTML = JavaFXRunnable.class.getResourceAsStream(logoFilePathToLoad);
-        InputStream sidebarHTML = JavaFXRunnable.class.getResourceAsStream(sidebarFilePathToLoad);
-        InputStream topnavbarHTML = JavaFXRunnable.class.getResourceAsStream(topnavbarFilePathToLoad);
         try
         {
             String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String headerImportsHTMLContent = new String(headerImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String logoHTMLContent = new String(logoHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String sidebarHTMLContent = new String(sidebarHTML.readAllBytes(), Charset.forName("UTF-8"));
-            String topnavbarHTMLContent = new String(topnavbarHTML.readAllBytes(), Charset.forName("UTF-8"));
             htmlContent = htmlContent.replace("@@base-path@@", Utils.getAbsolutePathOfResourceFile(pagePathToLoad));
             htmlContent = htmlContent.replace("@@header-imports@@", headerImportsHTMLContent);
             htmlContent = htmlContent.replace("@@javascript-imports@@", javascriptImportsHTMLContent);
