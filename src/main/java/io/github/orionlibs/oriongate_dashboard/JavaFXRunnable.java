@@ -94,24 +94,7 @@ public class JavaFXRunnable implements Runnable
             sceneContainer.getChildren().setAll(borderPane);
             Page.javafxPanel.setVisible(true);
             webEngine.loadContent(htmlContent);
-            webEngine.getLoadWorker().stateProperty()
-                            .addListener((obs, oldValue, newValue) -> {
-                                if(newValue == State.SUCCEEDED)
-                                {
-                                    //we get a reference to the DOM's window variable
-                                    JSObject window = (JSObject)webEngine.executeScript("window");
-                                    //set variables inside JavaScript
-                                    window.setMember("logger", Page.javaScriptConsoleListener);
-                                    window.setMember("pageLoader", Page.pageLoader);
-                                    if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
-                                    {
-                                        for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
-                                        {
-                                            window.setMember(variableToSet.getKey(), variableToSet.getValue());
-                                        }
-                                    }
-                                }
-                            });
+            loadJavaObjectsToJavaScript(webEngine);
         }
         catch(IOException e)
         {
@@ -146,29 +129,35 @@ public class JavaFXRunnable implements Runnable
             borderPane.setMinHeight(frameHeight);
             sceneContainer.getChildren().setAll(borderPane);
             webEngine.loadContent(htmlContent);
-            webEngine.getLoadWorker().stateProperty()
-                            .addListener((obs, oldValue, newValue) -> {
-                                if(newValue == State.SUCCEEDED)
-                                {
-                                    //we get a reference to the DOM's window variable
-                                    JSObject window = (JSObject)webEngine.executeScript("window");
-                                    //set variables inside JavaScript
-                                    window.setMember("logger", Page.javaScriptConsoleListener);
-                                    window.setMember("pageLoader", Page.pageLoader);
-                                    if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
-                                    {
-                                        for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
-                                        {
-                                            window.setMember(variableToSet.getKey(), variableToSet.getValue());
-                                        }
-                                    }
-                                }
-                            });
+            loadJavaObjectsToJavaScript(webEngine);
         }
         catch(IOException e)
         {
             throw new RuntimeException(e);
         }
+    }
+
+
+    public void loadJavaObjectsToJavaScript(WebEngine webEngine)
+    {
+        webEngine.getLoadWorker().stateProperty()
+                        .addListener((obs, oldValue, newValue) -> {
+                            if(newValue == State.SUCCEEDED)
+                            {
+                                //we get a reference to the DOM's window variable
+                                JSObject window = (JSObject)webEngine.executeScript("window");
+                                //set variables inside JavaScript
+                                window.setMember("logger", Page.javaScriptConsoleListener);
+                                window.setMember("pageLoader", Page.pageLoader);
+                                if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
+                                {
+                                    for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
+                                    {
+                                        window.setMember(variableToSet.getKey(), variableToSet.getValue());
+                                    }
+                                }
+                            }
+                        });
     }
 
 

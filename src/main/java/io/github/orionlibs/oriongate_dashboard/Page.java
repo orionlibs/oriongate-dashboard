@@ -1,5 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -51,9 +52,9 @@ public class Page extends JFrame
     {
         setTitle(pageTitle);
         setLocationByPlatform(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setSize(1920, 1080);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLogo();
     }
 
@@ -61,7 +62,7 @@ public class Page extends JFrame
     public void addPanel(JPanel panelToAdd)
     {
         setMainPanel(panelToAdd);
-        this.add(panelToAdd);
+        add(panelToAdd);
         revalidate();
         repaint();
     }
@@ -71,7 +72,7 @@ public class Page extends JFrame
     {
         InputStream logo = Page.class.getResourceAsStream("/configuration/images/logo.png");
         ImageIcon icon = new ImageIcon(ImageIO.read(logo));
-        this.setIconImage(icon.getImage());
+        setIconImage(icon.getImage());
     }
 
 
