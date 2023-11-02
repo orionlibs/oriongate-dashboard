@@ -1,11 +1,14 @@
 package io.github.orionlibs.oriongate_dashboard;
 
 import io.github.orionlibs.oriongate_dashboard.utils.Utils;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 import javafx.concurrent.Worker.State;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
@@ -20,7 +23,10 @@ public class JavaFXRunnable implements Runnable
     private String logoFilePathToLoad;
     private String sidebarFilePathToLoad;
     private String topnavbarFilePathToLoad;
+    private int frameWidth;
+    private int frameHeight;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
+    private Group sceneContainer = new Group();
 
 
     public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
@@ -31,6 +37,10 @@ public class JavaFXRunnable implements Runnable
         this.logoFilePathToLoad = logoFilePathToLoad;
         this.sidebarFilePathToLoad = sidebarFilePathToLoad;
         this.topnavbarFilePathToLoad = topnavbarFilePathToLoad;
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        this.frameWidth = screenSize.width;
+        this.frameHeight = screenSize.height;
         this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
     }
 
@@ -39,11 +49,6 @@ public class JavaFXRunnable implements Runnable
     public void run()
     {
         BorderPane borderPane = new BorderPane();
-        WebView webComponent = new WebView();
-        WebEngine webEngine = webComponent.getEngine();
-        webEngine.setJavaScriptEnabled(true);
-        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-        webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
         InputStream headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
         InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
@@ -66,46 +71,49 @@ public class JavaFXRunnable implements Runnable
             htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
             htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
             htmlContent = htmlContent.replace("@@current-year@@", Integer.toString(Utils.getCurrentYear()));
-            webEngine.loadContent(htmlContent);
+            WebView webComponent = new WebView();
+            WebEngine webEngine = webComponent.getEngine();
+            webEngine.setJavaScriptEnabled(true);
+            webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
             borderPane.setCenter(webComponent);
-            Scene scene = new Scene(borderPane, 1920, 1080);
+            borderPane.setMinWidth(frameWidth);
+            borderPane.setMinHeight(frameHeight);
+            Scene scene = new Scene(sceneContainer);
             Page.javafxPanel.setScene(scene);
+            sceneContainer.getChildren().setAll(borderPane);
             Page.javafxPanel.setVisible(true);
+            webEngine.loadContent(htmlContent);
+            webEngine.getLoadWorker().stateProperty()
+                            .addListener((obs, oldValue, newValue) -> {
+                                if(newValue == State.SUCCEEDED)
+                                {
+                                    //we get a reference to the DOM's window variable
+                                    JSObject window = (JSObject)webEngine.executeScript("window");
+                                    //set variables inside JavaScript
+                                    window.setMember("logger", Page.javaScriptConsoleListener);
+                                    window.setMember("pageLoader", Page.pageLoader);
+                                    if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
+                                    {
+                                        for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
+                                        {
+                                            window.setMember(variableToSet.getKey(), variableToSet.getValue());
+                                        }
+                                    }
+                                }
+                            });
         }
         catch(IOException e)
         {
             throw new RuntimeException(e);
         }
-        webEngine.getLoadWorker().stateProperty()
-                        .addListener((obs, oldValue, newValue) -> {
-                            if(newValue == State.SUCCEEDED)
-                            {
-                                //we get a reference to the DOM's window variable
-                                JSObject window = (JSObject)webEngine.executeScript("window");
-                                //set variables inside JavaScript
-                                window.setMember("logger", Page.javaScriptConsoleListener);
-                                window.setMember("pageLoader", Page.pageLoader);
-                                if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
-                                {
-                                    for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
-                                    {
-                                        window.setMember(variableToSet.getKey(), variableToSet.getValue());
-                                    }
-                                }
-                            }
-                        });
     }
 
 
     public void setNewScene(String newPagePathToLoad)
     {
-        pagePathToLoad = newPagePathToLoad;
+        setPagePathToLoad(newPagePathToLoad);
         BorderPane borderPane = new BorderPane();
-        WebView webComponent = new WebView();
-        WebEngine webEngine = webComponent.getEngine();
-        webEngine.setJavaScriptEnabled(true);
-        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-        webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
         InputStream headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
         InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
@@ -128,34 +136,42 @@ public class JavaFXRunnable implements Runnable
             htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
             htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
             htmlContent = htmlContent.replace("@@current-year@@", Integer.toString(Utils.getCurrentYear()));
-            webEngine.loadContent(htmlContent);
+            WebView webComponent = new WebView();
+            WebEngine webEngine = webComponent.getEngine();
+            webEngine.setJavaScriptEnabled(true);
+            webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+            webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
             borderPane.setCenter(webComponent);
-            Scene scene = new Scene(borderPane, 1920, 1080);
-            Page.javafxPanel.setScene(scene);
-            Page.javafxPanel.setVisible(true);
+            borderPane.setMinWidth(frameWidth);
+            borderPane.setMinHeight(frameHeight);
+            //sceneContainer.getChildren().get(0).setOpacity();
+            //sceneContainer.getChildren().get(0).setStyle();
+            //sceneContainer.getChildren().clear();
+            sceneContainer.getChildren().setAll(borderPane);
+            webEngine.loadContent(htmlContent);
+            webEngine.getLoadWorker().stateProperty()
+                            .addListener((obs, oldValue, newValue) -> {
+                                if(newValue == State.SUCCEEDED)
+                                {
+                                    //we get a reference to the DOM's window variable
+                                    JSObject window = (JSObject)webEngine.executeScript("window");
+                                    //set variables inside JavaScript
+                                    window.setMember("logger", Page.javaScriptConsoleListener);
+                                    window.setMember("pageLoader", Page.pageLoader);
+                                    if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
+                                    {
+                                        for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
+                                        {
+                                            window.setMember(variableToSet.getKey(), variableToSet.getValue());
+                                        }
+                                    }
+                                }
+                            });
         }
         catch(IOException e)
         {
             throw new RuntimeException(e);
         }
-        webEngine.getLoadWorker().stateProperty()
-                        .addListener((obs, oldValue, newValue) -> {
-                            if(newValue == State.SUCCEEDED)
-                            {
-                                //we get a reference to the DOM's window variable
-                                JSObject window = (JSObject)webEngine.executeScript("window");
-                                //set variables inside JavaScript
-                                window.setMember("logger", Page.javaScriptConsoleListener);
-                                window.setMember("pageLoader", Page.pageLoader);
-                                if(variableNamesToObjectsMapperToSetInJavaScript != null && !variableNamesToObjectsMapperToSetInJavaScript.isEmpty())
-                                {
-                                    for(Map.Entry<String, Object> variableToSet : variableNamesToObjectsMapperToSetInJavaScript.entrySet())
-                                    {
-                                        window.setMember(variableToSet.getKey(), variableToSet.getValue());
-                                    }
-                                }
-                            }
-                        });
     }
 
 
