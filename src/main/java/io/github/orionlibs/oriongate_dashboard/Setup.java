@@ -9,7 +9,7 @@ public class Setup
     private static HomePage homePage;
 
 
-    public static void loadHomePage()
+    public static void loadHomePageAsBootstrapPage()
     {
         SwingUtilities.invokeLater(new Runnable()
         {
@@ -32,8 +32,14 @@ public class Setup
     }
 
 
-    public static void loadHome2Page()
+    public static void loadHomePage() throws IOException
     {
-        //homePage.loadHome2Page();
+        homePage.loadHomePage();
+    }
+
+
+    public static void loadHome2Page() throws IOException
+    {
+        homePage.loadHome2Page();
     }
 }

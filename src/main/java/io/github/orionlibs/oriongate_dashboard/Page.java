@@ -1,6 +1,5 @@
 package io.github.orionlibs.oriongate_dashboard;
 
-import java.awt.BorderLayout;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -22,9 +21,10 @@ public class Page extends JFrame
     public static String logoFilePathToLoad = "/configuration/pages/common/logo.html";
     public static String sidebarFilePathToLoad = "/configuration/pages/common/sidebar.html";
     public static String topnavbarFilePathToLoad = "/configuration/pages/common/topnavbar.html";
-    private JPanel mainPanel;
+    protected JPanel mainPanel;
     private String pagePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
+    private JavaFXRunnable currentJavaFXRunnable;
 
     static
     {
@@ -32,6 +32,11 @@ public class Page extends JFrame
         javaScriptConsoleListener = new FrontEndLogger();
         pageLoader = new PageLoader();
     }
+
+    public Page()
+    {
+    }
+
 
     public Page(String pagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
     {
@@ -42,18 +47,23 @@ public class Page extends JFrame
     }
 
 
-    private void initSwingComponents() throws IOException
+    public void initSwingComponents() throws IOException
     {
         setTitle(pageTitle);
         setLocationByPlatform(true);
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(javafxPanel, BorderLayout.CENTER);
-        this.add(mainPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setSize(1920, 1080);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLogo();
+    }
+
+
+    public void addPanel(JPanel panelToAdd)
+    {
+        setMainPanel(panelToAdd);
+        this.add(panelToAdd);
+        revalidate();
+        repaint();
     }
 
 
@@ -65,8 +75,33 @@ public class Page extends JFrame
     }
 
 
-    private void loadJavaFXScene()
+    public void loadJavaFXScene()
     {
-        Platform.runLater(new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript));
+        currentJavaFXRunnable = new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
+        Platform.runLater(currentJavaFXRunnable);
+    }
+
+
+    public void setNewScene(String newPagePathToLoad)
+    {
+        currentJavaFXRunnable.setNewScene(newPagePathToLoad);
+    }
+
+
+    public void setMainPanel(JPanel mainPanel)
+    {
+        this.mainPanel = mainPanel;
+    }
+
+
+    public void setPagePathToLoad(String pagePathToLoad)
+    {
+        this.pagePathToLoad = pagePathToLoad;
+    }
+
+
+    public void setVariableNamesToObjectsMapperToSetInJavaScript(Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
+    {
+        this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
     }
 }
