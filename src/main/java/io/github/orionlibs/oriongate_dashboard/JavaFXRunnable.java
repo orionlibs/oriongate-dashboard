@@ -48,7 +48,6 @@ public class JavaFXRunnable implements Runnable
     @Override
     public void run()
     {
-        BorderPane borderPane = new BorderPane();
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
         InputStream headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
         InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
@@ -76,6 +75,7 @@ public class JavaFXRunnable implements Runnable
             webEngine.setJavaScriptEnabled(true);
             webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
             webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
+            BorderPane borderPane = new BorderPane();
             borderPane.setCenter(webComponent);
             borderPane.setMinWidth(frameWidth);
             borderPane.setMinHeight(frameHeight);
@@ -113,7 +113,6 @@ public class JavaFXRunnable implements Runnable
     public void setNewScene(String newPagePathToLoad)
     {
         setPagePathToLoad(newPagePathToLoad);
-        BorderPane borderPane = new BorderPane();
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
         InputStream headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
         InputStream javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
@@ -141,12 +140,10 @@ public class JavaFXRunnable implements Runnable
             webEngine.setJavaScriptEnabled(true);
             webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
             webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
+            BorderPane borderPane = new BorderPane();
             borderPane.setCenter(webComponent);
             borderPane.setMinWidth(frameWidth);
             borderPane.setMinHeight(frameHeight);
-            //sceneContainer.getChildren().get(0).setOpacity();
-            //sceneContainer.getChildren().get(0).setStyle();
-            //sceneContainer.getChildren().clear();
             sceneContainer.getChildren().setAll(borderPane);
             webEngine.loadContent(htmlContent);
             webEngine.getLoadWorker().stateProperty()
