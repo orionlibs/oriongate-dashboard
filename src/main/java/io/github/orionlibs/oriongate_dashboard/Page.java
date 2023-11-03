@@ -1,5 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javafx.embed.swing.JFXPanel;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Page extends JFrame
 {
@@ -47,13 +49,15 @@ public class Page extends JFrame
 
     public void initSwingComponents() throws IOException
     {
+        JPanel blackPanel = new JPanel();
+        blackPanel.setBackground(Color.black);
+        add(blackPanel);
         setTitle(pageTitle);
         setLocationByPlatform(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setSize(1920, 1080);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLogo();
-        add(javafxPanel);
     }
 
 
@@ -65,8 +69,9 @@ public class Page extends JFrame
     }
 
 
-    public void loadJavaFXScene()
+    public void loadJavaFXScene() throws IOException
     {
+        add(javafxPanel);
         currentJavaFXRunnable = new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
         Platform.runLater(currentJavaFXRunnable);
     }
@@ -81,11 +86,5 @@ public class Page extends JFrame
     public void setPagePathToLoad(String pagePathToLoad)
     {
         this.pagePathToLoad = pagePathToLoad;
-    }
-
-
-    public void setVariableNamesToObjectsMapperToSetInJavaScript(Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
-    {
-        this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
     }
 }

@@ -18,11 +18,6 @@ import netscape.javascript.JSObject;
 public class JavaFXRunnable implements Runnable
 {
     private String pagePathToLoad;
-    private String headerImportsFilePathToLoad;
-    private String javascriptImportsFilePathToLoad;
-    private String logoFilePathToLoad;
-    private String sidebarFilePathToLoad;
-    private String topnavbarFilePathToLoad;
     private int frameWidth;
     private int frameHeight;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
@@ -39,18 +34,23 @@ public class JavaFXRunnable implements Runnable
     private String topnavbarHTMLContent;
 
 
-    public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
+    public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
     {
         this.pagePathToLoad = pagePathToLoad;
-        this.headerImportsFilePathToLoad = headerImportsFilePathToLoad;
-        this.javascriptImportsFilePathToLoad = javascriptImportsFilePathToLoad;
-        this.logoFilePathToLoad = logoFilePathToLoad;
-        this.sidebarFilePathToLoad = sidebarFilePathToLoad;
-        this.topnavbarFilePathToLoad = topnavbarFilePathToLoad;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.frameWidth = screenSize.width;
         this.frameHeight = screenSize.height;
         this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
+        headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
+        javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
+        logoHTML = JavaFXRunnable.class.getResourceAsStream(logoFilePathToLoad);
+        sidebarHTML = JavaFXRunnable.class.getResourceAsStream(sidebarFilePathToLoad);
+        topnavbarHTML = JavaFXRunnable.class.getResourceAsStream(topnavbarFilePathToLoad);
+        headerImportsHTMLContent = new String(headerImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
+        javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
+        logoHTMLContent = new String(logoHTML.readAllBytes(), Charset.forName("UTF-8"));
+        sidebarHTMLContent = new String(sidebarHTML.readAllBytes(), Charset.forName("UTF-8"));
+        topnavbarHTMLContent = new String(topnavbarHTML.readAllBytes(), Charset.forName("UTF-8"));
     }
 
 
@@ -58,43 +58,13 @@ public class JavaFXRunnable implements Runnable
     public void run()
     {
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
-        headerImportsHTML = JavaFXRunnable.class.getResourceAsStream(headerImportsFilePathToLoad);
-        javascriptImportsHTML = JavaFXRunnable.class.getResourceAsStream(javascriptImportsFilePathToLoad);
-        logoHTML = JavaFXRunnable.class.getResourceAsStream(logoFilePathToLoad);
-        sidebarHTML = JavaFXRunnable.class.getResourceAsStream(sidebarFilePathToLoad);
-        topnavbarHTML = JavaFXRunnable.class.getResourceAsStream(topnavbarFilePathToLoad);
         try
         {
-            String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
-            headerImportsHTMLContent = new String(headerImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
-            javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
-            logoHTMLContent = new String(logoHTML.readAllBytes(), Charset.forName("UTF-8"));
-            sidebarHTMLContent = new String(sidebarHTML.readAllBytes(), Charset.forName("UTF-8"));
-            topnavbarHTMLContent = new String(topnavbarHTML.readAllBytes(), Charset.forName("UTF-8"));
-            htmlContent = htmlContent.replace("@@base-path@@", Utils.getAbsolutePathOfResourceFile(pagePathToLoad));
-            htmlContent = htmlContent.replace("@@header-imports@@", headerImportsHTMLContent);
-            htmlContent = htmlContent.replace("@@javascript-imports@@", javascriptImportsHTMLContent);
-            htmlContent = htmlContent.replace("@@theme@@", MainClass.config.getProp("theme.default"));
-            htmlContent = htmlContent.replace("@@logo@@", logoHTMLContent);
-            htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
-            htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
-            htmlContent = htmlContent.replace("@@current-year@@", Integer.toString(Utils.getCurrentYear()));
-            WebView webComponent = new WebView();
-            WebEngine webEngine = webComponent.getEngine();
-            webEngine.setJavaScriptEnabled(true);
-            webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
-            BorderPane borderPane = new BorderPane();
-            borderPane.setCenter(webComponent);
-            borderPane.setMinWidth(frameWidth);
-            borderPane.setMinHeight(frameHeight);
-            Scene scene = new Scene(sceneContainer, javafx.scene.paint.Color.BLACK);
-            //scene.setFill(javafx.scene.paint.Color.BLACK);
-            Page.javafxPanel.setScene(scene);
-            sceneContainer.getChildren().setAll(borderPane);
-            Page.javafxPanel.setVisible(true);
-            webEngine.loadContent(htmlContent);
-            loadJavaObjectsToJavaScript(webEngine);
+            String htmlContent = replacePlaceholdersInHTMLContent(pageHTML);
+            WebView webComponent = initialiseJavaFXWebEngine();
+            BorderPane borderPane = createPanelContent(webComponent);
+            setupWebScene();
+            loadContent(webComponent, htmlContent, borderPane);
         }
         catch(IOException e)
         {
@@ -109,28 +79,10 @@ public class JavaFXRunnable implements Runnable
         InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
         try
         {
-            String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
-            htmlContent = htmlContent.replace("@@base-path@@", Utils.getAbsolutePathOfResourceFile(pagePathToLoad));
-            htmlContent = htmlContent.replace("@@header-imports@@", headerImportsHTMLContent);
-            htmlContent = htmlContent.replace("@@javascript-imports@@", javascriptImportsHTMLContent);
-            htmlContent = htmlContent.replace("@@theme@@", MainClass.config.getProp("theme.default"));
-            htmlContent = htmlContent.replace("@@logo@@", logoHTMLContent);
-            htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
-            htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
-            htmlContent = htmlContent.replace("@@current-year@@", Integer.toString(Utils.getCurrentYear()));
-            WebView webComponent = new WebView();
-            WebEngine webEngine = webComponent.getEngine();
-            webEngine.setJavaScriptEnabled(true);
-            webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-            webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
-            BorderPane borderPane = new BorderPane();
-            borderPane.setCenter(webComponent);
-            borderPane.setMinWidth(frameWidth);
-            borderPane.setMinHeight(frameHeight);
-            sceneContainer.getChildren().setAll(borderPane);
-            webEngine.loadContent(htmlContent);
-            loadJavaObjectsToJavaScript(webEngine);
-            //Page.javafxPanel.setVisible(true);
+            String htmlContent = replacePlaceholdersInHTMLContent(pageHTML);
+            WebView webComponent = initialiseJavaFXWebEngine();
+            BorderPane borderPane = createPanelContent(webComponent);
+            loadContent(webComponent, htmlContent, borderPane);
         }
         catch(IOException e)
         {
@@ -159,6 +111,59 @@ public class JavaFXRunnable implements Runnable
                                 }
                             }
                         });
+    }
+
+
+    private String replacePlaceholdersInHTMLContent(InputStream pageHTML) throws IOException
+    {
+        String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
+        htmlContent = htmlContent.replace("@@base-path@@", Utils.getAbsolutePathOfResourceFile(pagePathToLoad));
+        htmlContent = htmlContent.replace("@@header-imports@@", headerImportsHTMLContent);
+        htmlContent = htmlContent.replace("@@javascript-imports@@", javascriptImportsHTMLContent);
+        htmlContent = htmlContent.replace("@@theme@@", MainClass.config.getProp("theme.default"));
+        htmlContent = htmlContent.replace("@@logo@@", logoHTMLContent);
+        htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
+        htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
+        htmlContent = htmlContent.replace("@@current-year@@", Integer.toString(Utils.getCurrentYear()));
+        return htmlContent;
+    }
+
+
+    private WebView initialiseJavaFXWebEngine()
+    {
+        WebView webComponent = new WebView();
+        WebEngine webEngine = webComponent.getEngine();
+        webEngine.setJavaScriptEnabled(true);
+        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+        webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
+        return webComponent;
+    }
+
+
+    private BorderPane createPanelContent(WebView webComponent)
+    {
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(webComponent);
+        borderPane.setMinWidth(frameWidth);
+        borderPane.setMinHeight(frameHeight);
+        return borderPane;
+    }
+
+
+    private void setupWebScene()
+    {
+        Scene scene = new Scene(sceneContainer);
+        scene.setFill(javafx.scene.paint.Color.BLACK);
+        Page.javafxPanel.setScene(scene);
+        Page.javafxPanel.setVisible(true);
+    }
+
+
+    private void loadContent(WebView webComponent, String htmlContent, BorderPane borderPane)
+    {
+        sceneContainer.getChildren().setAll(borderPane);
+        webComponent.getEngine().loadContent(htmlContent);
+        loadJavaObjectsToJavaScript(webComponent.getEngine());
     }
 
 
