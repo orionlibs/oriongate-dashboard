@@ -16,6 +16,7 @@ public class Page extends JFrame
 {
     public static FrontEndLogger javaScriptConsoleListener;
     public static PageLoader pageLoader;
+    public static JPanel mainPanel;
     public static JFXPanel javafxPanel;
     public static String pageTitle = "OrionGate";
     public static String headerImportsFilePathToLoad = "/configuration/pages/common/header-imports.html";
@@ -30,6 +31,7 @@ public class Page extends JFrame
     static
     {
         javafxPanel = new JFXPanel();
+        mainPanel = new JPanel();
         javaScriptConsoleListener = new FrontEndLogger();
         pageLoader = new PageLoader();
     }
@@ -50,8 +52,7 @@ public class Page extends JFrame
 
     public void initSwingComponents() throws IOException
     {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.black);
+        mainPanel.setBackground(Color.decode("#15403f"));
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(javafxPanel, BorderLayout.CENTER);
         add(mainPanel);
