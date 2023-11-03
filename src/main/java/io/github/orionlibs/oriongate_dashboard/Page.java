@@ -1,5 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,9 +50,11 @@ public class Page extends JFrame
 
     public void initSwingComponents() throws IOException
     {
-        JPanel blackPanel = new JPanel();
-        blackPanel.setBackground(Color.black);
-        add(blackPanel);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(Color.black);
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(javafxPanel, BorderLayout.CENTER);
+        add(mainPanel);
         setTitle(pageTitle);
         setLocationByPlatform(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +74,6 @@ public class Page extends JFrame
 
     public void loadJavaFXScene() throws IOException
     {
-        add(javafxPanel);
         currentJavaFXRunnable = new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
         Platform.runLater(currentJavaFXRunnable);
     }
