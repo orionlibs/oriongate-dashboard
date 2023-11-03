@@ -88,8 +88,8 @@ public class JavaFXRunnable implements Runnable
             borderPane.setCenter(webComponent);
             borderPane.setMinWidth(frameWidth);
             borderPane.setMinHeight(frameHeight);
-            Scene scene = new Scene(sceneContainer);
-            scene.setFill(javafx.scene.paint.Color.BLACK);
+            Scene scene = new Scene(sceneContainer, javafx.scene.paint.Color.BLACK);
+            //scene.setFill(javafx.scene.paint.Color.BLACK);
             Page.javafxPanel.setScene(scene);
             sceneContainer.getChildren().setAll(borderPane);
             Page.javafxPanel.setVisible(true);

@@ -8,7 +8,6 @@ import javafx.embed.swing.JFXPanel;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Page extends JFrame
 {
@@ -21,7 +20,6 @@ public class Page extends JFrame
     public static String logoFilePathToLoad = "/configuration/pages/common/logo.html";
     public static String sidebarFilePathToLoad = "/configuration/pages/common/sidebar.html";
     public static String topnavbarFilePathToLoad = "/configuration/pages/common/topnavbar.html";
-    protected JPanel mainPanel;
     private String pagePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
     private JavaFXRunnable currentJavaFXRunnable;
@@ -55,15 +53,7 @@ public class Page extends JFrame
         //this.setSize(1920, 1080);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLogo();
-    }
-
-
-    public void addPanel(JPanel panelToAdd)
-    {
-        setMainPanel(panelToAdd);
-        add(panelToAdd);
-        revalidate();
-        repaint();
+        add(javafxPanel);
     }
 
 
@@ -85,12 +75,6 @@ public class Page extends JFrame
     public void setNewScene(String newPagePathToLoad)
     {
         currentJavaFXRunnable.setNewScene(newPagePathToLoad);
-    }
-
-
-    public void setMainPanel(JPanel mainPanel)
-    {
-        this.mainPanel = mainPanel;
     }
 
 

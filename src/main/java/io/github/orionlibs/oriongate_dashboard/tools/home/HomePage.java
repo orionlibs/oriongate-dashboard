@@ -1,8 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard.tools.home;
 
 import io.github.orionlibs.oriongate_dashboard.Page;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.io.IOException;
 
 public class HomePage extends Page
@@ -12,12 +10,11 @@ public class HomePage extends Page
         //super("/configuration/pages/home/home.html", null);
         super();
         setPagePathToLoad("/configuration/pages/home/home.html");
-        HomePagePanel homePage = new HomePagePanel();
+        /*HomePagePanel homePage = new HomePagePanel();
         homePage.setLayout(new BorderLayout());
         homePage.setBackground(Color.black);
-        homePage.add(javafxPanel, BorderLayout.CENTER);
+        homePage.add(javafxPanel, BorderLayout.CENTER);*/
         initSwingComponents();
-        addPanel(homePage);
         loadJavaFXScene();
     }
 
