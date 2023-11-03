@@ -1,6 +1,5 @@
 package io.github.orionlibs.oriongate_dashboard;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;

@@ -47,8 +47,7 @@ public class JavaFXRunnable implements Runnable
         this.logoFilePathToLoad = logoFilePathToLoad;
         this.sidebarFilePathToLoad = sidebarFilePathToLoad;
         this.topnavbarFilePathToLoad = topnavbarFilePathToLoad;
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Dimension screenSize = toolkit.getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.frameWidth = screenSize.width;
         this.frameHeight = screenSize.height;
         this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
@@ -90,6 +89,7 @@ public class JavaFXRunnable implements Runnable
             borderPane.setMinWidth(frameWidth);
             borderPane.setMinHeight(frameHeight);
             Scene scene = new Scene(sceneContainer);
+            scene.setFill(javafx.scene.paint.Color.BLACK);
             Page.javafxPanel.setScene(scene);
             sceneContainer.getChildren().setAll(borderPane);
             Page.javafxPanel.setVisible(true);
@@ -130,6 +130,7 @@ public class JavaFXRunnable implements Runnable
             sceneContainer.getChildren().setAll(borderPane);
             webEngine.loadContent(htmlContent);
             loadJavaObjectsToJavaScript(webEngine);
+            //Page.javafxPanel.setVisible(true);
         }
         catch(IOException e)
         {

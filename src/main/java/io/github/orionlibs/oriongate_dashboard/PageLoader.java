@@ -6,6 +6,7 @@ public class PageLoader
 {
     public void loadPage(String pageID) throws IOException
     {
+        //Page.javafxPanel.setVisible(false);
         if("home".equals(pageID))
         {
             Setup.loadHomePage();
