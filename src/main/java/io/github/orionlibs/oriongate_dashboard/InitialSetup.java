@@ -18,7 +18,7 @@ public class InitialSetup
                 try
                 {
                     mainPage = new Page();
-                    mainPage.setNewScene(MainClass.config.getProp("page.path.home"));
+                    mainPage.setNewScene(MainClass.config.getProp("page.path.home.dashboard"));
                 }
                 catch(IOException e)
                 {

@@ -6,9 +6,9 @@ public class PageLoader
 {
     public void loadPage(String pageID) throws IOException
     {
-        if("page1".equals(pageID))
+        if("homeDashboard".equals(pageID))
         {
-            PageSetup.loadPage1();
+            PageSetup.loadHomeDashboard();
         }
         else if("page2".equals(pageID))
         {

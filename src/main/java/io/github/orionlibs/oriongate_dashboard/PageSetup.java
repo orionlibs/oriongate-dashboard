@@ -4,9 +4,9 @@ import java.io.IOException;
 
 public class PageSetup
 {
-    public static void loadPage1() throws IOException
+    public static void loadHomeDashboard() throws IOException
     {
-        InitialSetup.mainPage.setNewScene(MainClass.config.getProp("page.path.home"));
+        InitialSetup.mainPage.setNewScene(MainClass.config.getProp("page.path.home.dashboard"));
     }
 
 
