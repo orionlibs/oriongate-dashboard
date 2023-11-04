@@ -18,11 +18,9 @@ public class InitialSetup
                 try
                 {
                     mainPage = new Page();
-                    mainPage.setPagePathToLoad(MainClass.config.getProp("page.path.home"));
-                    mainPage.loadJavaFXScene();
-                    mainPage.setVisible(true);
+                    mainPage.setNewScene(MainClass.config.getProp("page.path.home"));
                 }
-                catch(IOException | InterruptedException e)
+                catch(IOException e)
                 {
                     throw new RuntimeException(e);
                 }

@@ -48,15 +48,6 @@ public class Page extends JFrame
     }
 
 
-    public Page(String pagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException, InterruptedException
-    {
-        this.pagePathToLoad = pagePathToLoad;
-        this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
-        initSwingComponents();
-        loadJavaFXScene();
-    }
-
-
     public void initSwingComponents() throws IOException
     {
         setTitle(pageTitle);
@@ -80,21 +71,41 @@ public class Page extends JFrame
     }
 
 
-    public void loadJavaFXScene() throws IOException, InterruptedException
+    public void loadJavaFXScene() throws IOException
     {
         currentJavaFXRunnable = new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
         Platform.runLater(currentJavaFXRunnable);
-        Thread.sleep(1700);
     }
 
 
-    public void setNewScene(String newPagePathToLoad) throws IOException, InterruptedException
+    public void setNewScene() throws IOException
     {
         if(currentJavaFXRunnable == null)
         {
             loadJavaFXScene();
         }
-        currentJavaFXRunnable.setNewScene(newPagePathToLoad);
+        else
+        {
+            currentJavaFXRunnable.setNewScene(pagePathToLoad);
+        }
+        if(!isVisible())
+        {
+            setVisible(true);
+        }
+    }
+
+
+    public void setNewScene(String newPagePathToLoad) throws IOException
+    {
+        setPagePathToLoad(newPagePathToLoad);
+        setNewScene();
+    }
+
+
+    public void setNewScene(String newPagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
+    {
+        this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
+        setNewScene(newPagePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
     }
 
 

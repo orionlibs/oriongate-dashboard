@@ -74,7 +74,14 @@ public class JavaFXRunnable implements Runnable
     }
 
 
-    public void loadJavaObjectsToJavaScript(WebEngine webEngine)
+    public void setNewScene(String newPagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
+    {
+        this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
+        setNewScene(newPagePathToLoad);
+    }
+
+
+    private void loadJavaObjectsToJavaScript(WebEngine webEngine)
     {
         webEngine.getLoadWorker().stateProperty()
                         .addListener((obs, oldValue, newValue) -> {

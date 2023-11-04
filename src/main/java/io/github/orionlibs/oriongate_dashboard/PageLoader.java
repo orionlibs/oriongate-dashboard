@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class PageLoader
 {
-    public void loadPage(String pageID) throws IOException, InterruptedException
+    public void loadPage(String pageID) throws IOException
     {
         if("page1".equals(pageID))
         {
