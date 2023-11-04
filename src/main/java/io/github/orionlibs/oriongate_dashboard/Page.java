@@ -104,10 +104,10 @@ public class Page extends JFrame
     }
 
 
-    public void setNewScene(String newPagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript)
+    public void setNewScene(String newPagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
     {
         this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
-        setNewScene(newPagePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
+        setNewScene(newPagePathToLoad);
     }
 
 

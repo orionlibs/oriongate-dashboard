@@ -1,5 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard;
 
+import io.github.orionlibs.oriongate_dashboard.tools.home_dashboard.HomeDashboardPage;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
 
@@ -18,7 +19,7 @@ public class InitialSetup
                 try
                 {
                     mainPage = new Page();
-                    mainPage.setNewScene(MainClass.config.getProp("page.path.home.dashboard"));
+                    mainPage.setNewScene(MainClass.config.getProp("page.path.home.dashboard"), new HomeDashboardPage().getVariableNamesToObjectsMapperToSetInJavaScript());
                 }
                 catch(IOException e)
                 {
