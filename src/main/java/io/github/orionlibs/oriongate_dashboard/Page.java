@@ -18,18 +18,24 @@ public class Page extends JFrame
     public static PageLoader pageLoader;
     public static JPanel mainPanel;
     public static JFXPanel javafxPanel;
-    public static String pageTitle = "OrionGate";
-    public static String headerImportsFilePathToLoad = "/configuration/pages/common/header-imports.html";
-    public static String javascriptImportsFilePathToLoad = "/configuration/pages/common/javascript-imports.html";
-    public static String logoFilePathToLoad = "/configuration/pages/common/logo.html";
-    public static String sidebarFilePathToLoad = "/configuration/pages/common/sidebar.html";
-    public static String topnavbarFilePathToLoad = "/configuration/pages/common/topnavbar.html";
+    public static String pageTitle;
+    public static String headerImportsFilePathToLoad;
+    public static String javascriptImportsFilePathToLoad;
+    public static String logoFilePathToLoad;
+    public static String sidebarFilePathToLoad;
+    public static String topnavbarFilePathToLoad;
     private String pagePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
     private JavaFXRunnable currentJavaFXRunnable;
 
     static
     {
+        pageTitle = "OrionGate";
+        headerImportsFilePathToLoad = MainClass.config.getProp("common.component.path.header.imports");
+        javascriptImportsFilePathToLoad = MainClass.config.getProp("common.component.path.javascript.imports");
+        logoFilePathToLoad = MainClass.config.getProp("common.component.path.logo");
+        sidebarFilePathToLoad = MainClass.config.getProp("common.component.path.sidebar");
+        topnavbarFilePathToLoad = MainClass.config.getProp("common.component.path.topnavbar");
         javafxPanel = new JFXPanel();
         mainPanel = new JPanel();
         javaScriptConsoleListener = new FrontEndLogger();
@@ -41,7 +47,7 @@ public class Page extends JFrame
     }
 
 
-    public Page(String pagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
+    public Page(String pagePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException, InterruptedException
     {
         this.pagePathToLoad = pagePathToLoad;
         this.variableNamesToObjectsMapperToSetInJavaScript = variableNamesToObjectsMapperToSetInJavaScript;
@@ -52,31 +58,32 @@ public class Page extends JFrame
 
     public void initSwingComponents() throws IOException
     {
-        mainPanel.setBackground(Color.decode("#15403f"));
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(javafxPanel, BorderLayout.CENTER);
-        add(mainPanel);
         setTitle(pageTitle);
         setLocationByPlatform(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setSize(1920, 1080);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLogo();
+        mainPanel.setBackground(Color.decode(MainClass.config.getProp("window.background.color")));
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(javafxPanel, BorderLayout.CENTER);
+        add(mainPanel);
     }
 
 
     private void setLogo() throws IOException
     {
-        InputStream logo = Page.class.getResourceAsStream("/configuration/images/logo.png");
+        InputStream logo = Page.class.getResourceAsStream(MainClass.config.getProp("logo.path"));
         ImageIcon icon = new ImageIcon(ImageIO.read(logo));
         setIconImage(icon.getImage());
     }
 
 
-    public void loadJavaFXScene() throws IOException
+    public void loadJavaFXScene() throws IOException, InterruptedException
     {
         currentJavaFXRunnable = new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
         Platform.runLater(currentJavaFXRunnable);
+        Thread.sleep(1700);
     }
 
 

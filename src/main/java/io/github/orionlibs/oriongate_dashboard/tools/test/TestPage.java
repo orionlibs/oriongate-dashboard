@@ -17,7 +17,7 @@ public class TestPage extends Page
         variableNamesToObjectsMapperToSetInJavaScript.put("homeService", homeService);
     }
 
-    public TestPage() throws IOException
+    public TestPage() throws IOException, InterruptedException
     {
         super("/configuration/pages/home/home.html", variableNamesToObjectsMapperToSetInJavaScript);
     }

@@ -32,6 +32,9 @@ public class JavaFXRunnable implements Runnable
     private String logoHTMLContent;
     private String sidebarHTMLContent;
     private String topnavbarHTMLContent;
+    private WebView webComponent;
+    private String htmlContent;
+    private BorderPane borderPane;
 
 
     public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
@@ -57,37 +60,17 @@ public class JavaFXRunnable implements Runnable
     @Override
     public void run()
     {
-        InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
-        try
-        {
-            String htmlContent = replacePlaceholdersInHTMLContent(pageHTML);
-            WebView webComponent = initialiseJavaFXWebEngine();
-            BorderPane borderPane = createPanelContent(webComponent);
-            setupWebScene();
-            loadContent(webComponent, htmlContent, borderPane);
-        }
-        catch(IOException e)
-        {
-            throw new RuntimeException(e);
-        }
+        initialiseWebContent();
+        setupWebScene();
+        loadContent(htmlContent, borderPane);
     }
 
 
     public void setNewScene(String newPagePathToLoad)
     {
         setPagePathToLoad(newPagePathToLoad);
-        InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
-        try
-        {
-            String htmlContent = replacePlaceholdersInHTMLContent(pageHTML);
-            WebView webComponent = initialiseJavaFXWebEngine();
-            BorderPane borderPane = createPanelContent(webComponent);
-            loadContent(webComponent, htmlContent, borderPane);
-        }
-        catch(IOException e)
-        {
-            throw new RuntimeException(e);
-        }
+        initialiseWebContent();
+        loadContent(htmlContent, borderPane);
     }
 
 
@@ -114,6 +97,22 @@ public class JavaFXRunnable implements Runnable
     }
 
 
+    private void initialiseWebContent()
+    {
+        InputStream pageHTML = JavaFXRunnable.class.getResourceAsStream(pagePathToLoad);
+        try
+        {
+            htmlContent = replacePlaceholdersInHTMLContent(pageHTML);
+            webComponent = initialiseJavaFXWebEngine();
+            borderPane = createPanelContent();
+        }
+        catch(IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private String replacePlaceholdersInHTMLContent(InputStream pageHTML) throws IOException
     {
         String htmlContent = new String(pageHTML.readAllBytes(), Charset.forName("UTF-8"));
@@ -134,13 +133,13 @@ public class JavaFXRunnable implements Runnable
         WebView webComponent = new WebView();
         WebEngine webEngine = webComponent.getEngine();
         webEngine.setJavaScriptEnabled(true);
-        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+        webEngine.setUserAgent(MainClass.config.getProp("user.agent"));
         webEngine.setOnAlert(event -> Page.javaScriptConsoleListener.error("front-end error: " + event.getData()));
         return webComponent;
     }
 
 
-    private BorderPane createPanelContent(WebView webComponent)
+    private BorderPane createPanelContent()
     {
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(webComponent);
@@ -155,11 +154,10 @@ public class JavaFXRunnable implements Runnable
         Scene scene = new Scene(sceneContainer);
         scene.setFill(javafx.scene.paint.Color.BLACK);
         Page.javafxPanel.setScene(scene);
-        Page.javafxPanel.setVisible(true);
     }
 
 
-    private void loadContent(WebView webComponent, String htmlContent, BorderPane borderPane)
+    private void loadContent(String htmlContent, BorderPane borderPane)
     {
         sceneContainer.getChildren().setAll(borderPane);
         webComponent.getEngine().loadContent(htmlContent);

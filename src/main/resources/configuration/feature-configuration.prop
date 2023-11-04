@@ -1,1 +1,13 @@
 theme.default=bg-theme13
+window.background.color=#15403f
+logo.path=/configuration/images/logo.png
+user.agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36
+
+page.path.home=/configuration/pages/home/home.html
+page.path.home2=/configuration/pages/home/home2.html
+
+common.component.path.header.imports=/configuration/pages/common/header-imports.html
+common.component.path.javascript.imports=/configuration/pages/common/javascript-imports.html
+common.component.path.logo=/configuration/pages/common/logo.html
+common.component.path.sidebar=/configuration/pages/common/sidebar.html
+common.component.path.topnavbar=/configuration/pages/common/topnavbar.html

@@ -24,7 +24,7 @@ public class MainClass
 
     public static void main(String[] args) throws IOException
     {
-        Setup.loadHomePageAsBootstrapPage();
+        InitialSetup.loadHomePageAsBootstrapPage();
         config = new ConfigurationService();
         setupConfiguration();
     }

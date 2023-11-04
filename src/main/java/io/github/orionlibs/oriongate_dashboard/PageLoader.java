@@ -8,11 +8,11 @@ public class PageLoader
     {
         if("home".equals(pageID))
         {
-            Setup.loadHomePage();
+            PageSetup.loadHomePage();
         }
         else if("home2".equals(pageID))
         {
-            Setup.loadHome2Page();
+            PageSetup.loadHome2Page();
         }
     }
 }

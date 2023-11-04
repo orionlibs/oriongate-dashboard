@@ -1,4 +1,750 @@
-resizing the window should resize the WebView content
+Show operating system name and version, bits, OS icon, kernel, uptime, number of packages installed, screen resolution, CPU and utilisation, RAM, GPU, battery left, network, username, HDDs. Create charts for utilisation.
+How can I get the operating system name with java?
+ChatGPT
+
+In Java, you can get the name of the operating system by using the System.getProperty method with the key "os.name". Here's a simple example:
+
+java
+
+String operatingSystem = System.getProperty("os.name");
+System.out.println("Operating system name: " + operatingSystem);
+
+When you run this code, it will print the name of the operating system that the Java Virtual Machine is running on.
+User
+How can I get the operating system architecture with java?
+ChatGPT
+
+To get the operating system architecture in Java, you can use the System.getProperty method with the key "os.arch". Here's how you can do it:
+
+java
+
+String osArchitecture = System.getProperty("os.arch");
+System.out.println("Operating system architecture: " + osArchitecture);
+
+This will print the architecture of the operating system, such as x86, amd64, or arm64.
+User
+How can I get the operating system version with java?
+ChatGPT
+
+To retrieve the operating system version in Java, you would use the System.getProperty method with the key "os.version". Here is a snippet of how to do this:
+
+java
+
+String osVersion = System.getProperty("os.version");
+System.out.println("Operating system version: " + osVersion);
+
+Executing this code will output the version of the operating system.
+User
+How can I get the operating system kernel with java?
+ChatGPT
+
+In Java, there is no standard system property for directly obtaining the kernel version because Java is designed to be platform-independent. However, you can typically infer the kernel information from the operating system name and version on some systems.
+
+For Unix-like operating systems, including Linux and macOS, you can execute system commands from Java to get the kernel version. For example:
+
+java
+
+String osName = System.getProperty("os.name").toLowerCase();
+String kernelVersion = "";
+
+if (osName.contains("linux")) {
+    kernelVersion = execCommand("uname -r");
+} else if (osName.contains("mac")) {
+    kernelVersion = execCommand("uname -v");
+} else if (osName.contains("win")) {
+    // Windows does not have a kernel version separate from the OS version, which you can get with "os.version".
+    kernelVersion = System.getProperty("os.version");
+}
+
+System.out.println("Kernel version: " + kernelVersion);
+
+private static String execCommand(String command) {
+    try {
+        Process process = Runtime.getRuntime().exec(command);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        String line = reader.readLine();
+        reader.close();
+
+        return line;
+    } catch (IOException e) {
+        e.printStackTrace();
+        return "Error retrieving kernel version";
+    }
+}
+
+This code defines a method to execute a system command and reads the first line of its output, which is often the kernel version. It uses conditional logic to execute the appropriate command based on the detected operating system.
+
+Note that for security reasons, executing system commands from Java applications should be done with caution and with proper sanitization if any part of the command is derived from user input.
+User
+How can I get the operating system uptime with java?
+ChatGPT
+
+To get the operating system uptime in Java, you can execute a system command and parse the output. The exact command depends on the OS. Here's a cross-platform example that checks the operating system name and runs the appropriate command:
+
+java
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class SystemUptime {
+
+    public static void main(String[] args) {
+        String os = System.getProperty("os.name").toLowerCase();
+        try {
+            long uptime = -1;
+            if (os.contains("win")) {
+                uptime = getWindowsUptime();
+            } else if (os.contains("mac") || os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+                uptime = getUnixUptime();
+            }
+            System.out.println("Uptime (milliseconds): " + uptime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static long getWindowsUptime() throws IOException, InterruptedException {
+        Process uptimeProc = Runtime.getRuntime().exec("net stats srv");
+        BufferedReader in = new BufferedReader(new InputStreamReader(uptimeProc.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            if (line.startsWith("Statistics since")) {
+                String[] tokens = line.split("\\s+");
+                String timeString = tokens[2] + " " + tokens[3];
+                // Parse the timeString to find the uptime
+                // You'll need to write the code to parse the date and subtract it from the current time
+            }
+        }
+        return -1; // Uptime not found
+    }
+
+    private static long getUnixUptime() throws IOException, InterruptedException {
+        Process uptimeProc = Runtime.getRuntime().exec("uptime -s");
+        BufferedReader in = new BufferedReader(new InputStreamReader(uptimeProc.getInputStream()));
+        String line = in.readLine();
+        if (line != null) {
+            // Parse the line to find the uptime
+            // You'll need to write the code to parse the date and subtract it from the current time
+        }
+        return -1; // Uptime not found
+    }
+}
+
+This code provides a framework for getting the uptime. For Windows, it uses the net stats srv command, which returns the time since the server service was started. You would need to parse this time and compare it with the current time to find the uptime.
+
+For Unix-like systems (including Linux and macOS), the uptime -s command gives the system's last startup time. Again, you would need to parse this output and determine the difference from the current time to calculate the uptime.
+
+The parsing part is not provided and needs to be implemented as it can vary depending on the system's locale and date format. After parsing, you would calculate the difference between the current system time and the startup time to get the uptime in milliseconds.
+User
+How can I get the number of packages installed in operating system with java?
+ChatGPT
+
+To get the number of packages installed on the operating system using Java, you would typically execute a system command and parse the output. The command differs based on the operating system and the package management system in use.
+
+Here's a sample code snippet that you can use as a starting point:
+
+java
+
+public class PackageCount {
+
+    public static void main(String[] args) {
+        String os = System.getProperty("os.name").toLowerCase();
+        String command = null;
+
+        if (os.contains("linux")) {
+            // For systems using dpkg (like Ubuntu)
+            command = "dpkg -l | wc -l";
+            // For systems using rpm (like Fedora)
+            // command = "rpm -qa | wc -l";
+            // For systems using pacman (like Arch Linux)
+            // command = "pacman -Q | wc -l";
+        } else if (os.contains("mac")) {
+            // For macOS using Homebrew
+            command = "brew list --formula | wc -l";
+        } else if (os.contains("win")) {
+            // Windows does not have a native package manager, but if you use Chocolatey, the command would be:
+            // command = "choco list --local-only | find /c /v \"\"";
+        }
+
+        if (command != null) {
+            try {
+                int packagesCount = executeCommandAndGetOutputAsInteger(command);
+                System.out.println("Number of installed packages: " + packagesCount);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Unsupported operating system for this operation");
+        }
+    }
+
+    private static int executeCommandAndGetOutputAsInteger(String command) throws IOException, InterruptedException {
+        Process process = Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", command});
+        process.waitFor();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line = reader.readLine();
+        if (line != null) {
+            return Integer.parseInt(line.trim());
+        }
+        return -1;
+    }
+}
+
+This example assumes the use of common package managers like dpkg, rpm, pacman, and Homebrew. For Windows, if you use Chocolatey as a package manager, you could use a similar approach. Remember to choose the appropriate command based on the package manager in use on the target system.
+
+Please be aware that executing system commands from within a Java application can pose security risks, especially if any part of the command is constructed from user input. Always validate and sanitize inputs to avoid injection attacks.
+User
+How can I get the screen resolution with java?
+ChatGPT
+
+In Java, you can get the screen resolution by using the Toolkit class and the GraphicsEnvironment class to access screen details. Here's a straightforward example of how to do it:
+
+java
+
+import java.awt.*;
+
+public class ScreenResolution {
+    public static void main(String[] args) {
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+        
+        System.out.println("Screen resolution is: " + width + "x" + height);
+    }
+}
+
+When you run this code, it will print the current screen resolution of the default screen device. If you have multiple monitors, you may need to iterate over the GraphicsDevice array returned by GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices() to get the resolution of each one.
+User
+How can I get the cpu information with java including the brand, the current frequency?
+ChatGPT
+
+Java does not provide a direct standard API to fetch detailed CPU information like brand and current frequency because of its platform-independent nature. However, you can obtain some of this information by executing system commands from Java or by using third-party libraries like OSHI (Operating System and Hardware Information).
+
+For executing system commands, here's how you can do it:
+
+    On Windows:
+    You can use system commands like wmic cpu get name and wmic cpu get CurrentClockSpeed.
+
+    On Unix-like systems (Linux, macOS):
+    You can extract CPU information from the /proc/cpuinfo file on Linux or use system commands like sysctl -a | grep brand for CPU brand and sysctl -a | grep freq for CPU frequency on macOS.
+
+Here's an example method that executes a command and returns the output:
+
+java
+
+private static String executeSystemCommand(String command) {
+    StringBuilder output = new StringBuilder();
+    try {
+        Process process = Runtime.getRuntime().exec(command);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            output.append(line).append("\n");
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return output.toString();
+}
+
+You would then call this method with the appropriate command based on the OS.
+
+If you need to do this in a cross-platform way without writing a lot of custom code, consider using the OSHI library. It provides a simple API to fetch hardware information. Here's an example using OSHI to get the CPU information:
+
+java
+
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.HardwareAbstractionLayer;
+
+public class CpuInfo {
+    public static void main(String[] args) {
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hal = si.getHardware();
+        CentralProcessor processor = hal.getProcessor();
+        
+        String processorName = processor.getName();
+        long processorFrequency = processor.getMaxFreq();
+
+        System.out.println("Processor Name: " + processorName);
+        System.out.println("Processor Max Frequency (Hz): " + processorFrequency);
+    }
+}
+
+To use OSHI, you will need to add it as a dependency in your project, which you can do via Maven, Gradle, or manually adding the JARs.
+
+Please be aware that accessing CPU frequency can be tricky because it can vary in real-time due to power-saving features or automatic overclocking (like Intel's Turbo Boost). The values you get are typically the base frequency or the maximum possible frequency, not the current operating frequency.
+User
+How can I get the RAM information with java?
+ChatGPT
+
+Java does not provide a direct API to fetch physical RAM information. However, you can retrieve the memory information of the Java Virtual Machine itself. For detailed system RAM information, you would need to use a third-party library or execute system commands.
+
+Here's how you can get JVM memory information:
+
+java
+
+long memorySize = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+System.out.println("Used memory in bytes: " + memorySize);
+
+For system-level RAM details, use a third-party library like OSHI (Operating System and Hardware Information). Here's an example using OSHI:
+
+java
+
+import oshi.SystemInfo;
+import oshi.hardware.GlobalMemory;
+
+public class RamInfo {
+    public static void main(String[] args) {
+        SystemInfo si = new SystemInfo();
+        GlobalMemory memory = si.getHardware().getMemory();
+
+        System.out.println("Total RAM: " + memory.getTotal() + " bytes");
+        System.out.println("Available RAM: " + memory.getAvailable() + " bytes");
+    }
+}
+
+To use OSHI, you will need to include it in your project's dependencies.
+
+If you prefer to use system commands:
+
+    For Windows: Execute wmic ComputerSystem get TotalPhysicalMemory and wmic OS get FreePhysicalMemory.
+    For Unix-like systems: Parse the output of free -b (for bytes) or vm_stat on macOS.
+
+You would execute these commands from Java using Runtime.getRuntime().exec(command) and process the output accordingly. Remember that executing system commands can pose security risks and should be done cautiously.
+User
+How can I get the gpu information with java?
+ChatGPT
+
+Java itself does not offer a direct way to get GPU information because it operates above the hardware layer to maintain platform independence. However, you can use third-party libraries or execute native system commands to obtain this information.
+
+For a pure Java solution, a library like OSHI (Operating System and Hardware Information) can be used:
+
+java
+
+import oshi.SystemInfo;
+import oshi.hardware.GraphicsCard;
+
+public class GpuInfo {
+    public static void main(String[] args) {
+        SystemInfo systemInfo = new SystemInfo();
+        for(GraphicsCard card : systemInfo.getHardware().getGraphicsCards()) {
+            System.out.println("GPU: " + card.getName());
+            System.out.println("Vendor: " + card.getVendor());
+            System.out.println("Version: " + card.getVersion());
+            System.out.println("VRAM: " + card.getVRam() + " Bytes");
+        }
+    }
+}
+
+To use OSHI, you need to add it to your project dependencies. OSHI provides a high-level API to access hardware information, including GPUs.
+
+For executing system commands, you would have to rely on platform-specific commands:
+
+    On Windows: Use the wmic path win32_VideoController get name command.
+    On Linux: Use the lspci | grep VGA or lshw -class display command.
+    On macOS: There isn't a simple command-line tool, but you can use system_profiler: system_profiler SPDisplaysDataType.
+
+Here's an example method that executes a command and returns the output as a string:
+
+java
+
+private static String executeCommand(String command) {
+    StringBuilder output = new StringBuilder();
+    Process process;
+    try {
+        process = Runtime.getRuntime().exec(command);
+        process.waitFor();
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+        }
+    } catch (IOException | InterruptedException e) {
+        e.printStackTrace();
+    }
+    return output.toString();
+}
+
+You can call this method with the appropriate command based on the operating system.
+
+Keep in mind that getting detailed GPU information through system commands can be complex and may require additional parsing of the output. Furthermore, the availability and format of the required information can vary greatly between different systems and configurations.
+User
+How can I get the battery left with java?
+ChatGPT
+
+Java does not provide built-in support for retrieving battery status directly. To get the battery information, including the percentage of battery left, you can either use a third-party library or call native operating system commands and parse the output.
+
+For a cross-platform Java library, you can use OSHI (Operating System and Hardware Information). Here's how you might use OSHI to get the battery information:
+
+java
+
+import oshi.SystemInfo;
+import oshi.hardware.PowerSource;
+
+public class BatteryInfo {
+    public static void main(String[] args) {
+        SystemInfo si = new SystemInfo();
+        PowerSource[] powerSources = si.getHardware().getPowerSources();
+
+        if (powerSources.length == 0) {
+            System.out.println("No battery information available");
+            return;
+        }
+
+        for (PowerSource powerSource : powerSources) {
+            System.out.println("Battery Name: " + powerSource.getName());
+            System.out.println("Battery Remaining Capacity Percent: " + powerSource.getRemainingCapacity() * 100 + "%");
+            System.out.println("Battery Time Remaining: " + powerSource.getTimeRemaining() + " seconds");
+        }
+    }
+}
+
+To use this code, you'd need to include OSHI in your project's dependencies.
+
+If you decide to use system commands:
+
+    On Windows, you can use WMIC Path Win32_Battery Get EstimatedChargeRemaining to get the battery percentage left.
+    On macOS, you can get battery information from the pmset -g batt command.
+    On Linux, you can usually read from /sys/class/power_supply/BAT0/capacity (if it exists) to get the battery percentage.
+
+You would run these commands using Runtime.getRuntime().exec(command) and then parse the output to extract the battery percentage.
+
+Remember that executing system commands from a Java application requires careful consideration of security implications, especially if any part of the command is influenced by user input.
+User
+How can I get the network currently connected with java?
+ChatGPT
+
+In Java, you can use the NetworkInterface class to get information about the network interfaces available on the system. This can tell you which interfaces are currently up and potentially connected to a network. However, it won't tell you specifically about internet connectivity or which network you're "currently connected" to in terms of Wi-Fi SSID or the name of the network.
+
+Here is an example of how to list all network interfaces and display some details about each one, including whether it is up (which usually means connected):
+
+java
+
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.Enumeration;
+
+public class NetworkInfo {
+    public static void main(String[] args) {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            for (NetworkInterface intf : Collections.list(interfaces)) {
+                if (intf.isUp()) {
+                    System.out.println("Display name: " + intf.getDisplayName());
+                    System.out.println("Name: " + intf.getName());
+                    // Additional details can be obtained here
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+If you need information like the Wi-Fi SSID or the name of the network you're connected to, you would need to use system-specific commands and execute them from Java, as there is no standard Java API for this.
+
+    For Windows: Execute a command like netsh wlan show interfaces and parse the output for the SSID.
+    For macOS: Execute a command like /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I and parse the output for the SSID.
+    For Linux: Execute a command like iwgetid -r to get the SSID.
+
+The output of these commands can then be read and parsed in Java using Runtime.getRuntime().exec(command) similar to previous examples.
+User
+How can I get the current username with java?
+ChatGPT
+
+In Java, you can obtain the current user's username by using the System.getProperty method with the "user.name" key. Here's a simple line of code to do this:
+
+java
+
+String username = System.getProperty("user.name");
+System.out.println("Current user's username: " + username);
+
+Executing this code snippet will print the username of the user currently logged into the operating system.
+User
+How can I get the information of all hard drives with java?
+ChatGPT
+
+Java does not provide a direct API to fetch all details of hard drives due to its platform-independent design. However, you can use the java.io.File class to get some basic information about the available file systems, which includes mounted hard drives. For more detailed hardware-level information, you would typically need to use a third-party library such as OSHI (Operating System and Hardware Information).
+
+Here's an example using the java.io.File class:
+
+java
+
+import java.io.File;
+
+public class DrivesInfo {
+    public static void main(String[] args) {
+        File[] roots = File.listRoots();
+        for (File root : roots) {
+            System.out.println("Drive: " + root.getAbsolutePath());
+            System.out.println("Total space (bytes): " + root.getTotalSpace());
+            System.out.println("Free space (bytes): " + root.getFreeSpace());
+            System.out.println("Usable space (bytes): " + root.getUsableSpace());
+            System.out.println();
+        }
+    }
+}
+
+For more detailed information, like serial numbers, disk health, etc., you would use OSHI:
+
+java
+
+import oshi.SystemInfo;
+import oshi.hardware.HWDiskStore;
+import oshi.hardware.HardwareAbstractionLayer;
+
+public class DrivesInfo {
+    public static void main(String[] args) {
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hal = si.getHardware();
+        HWDiskStore[] diskStores = hal.getDiskStores();
+        for (HWDiskStore disk : diskStores) {
+            System.out.println("Name: " + disk.getName());
+            System.out.println("Model: " + disk.getModel());
+            System.out.println("Serial: " + disk.getSerial());
+            System.out.println("Size: " + disk.getSize());
+            System.out.println("Reads: " + disk.getReads());
+            System.out.println("Writes: " + disk.getWrites());
+            System.out.println();
+        }
+    }
+}
+
+To use OSHI, you'll need to add it to your project dependencies. It provides a straightforward API to query hardware information, and it works across multiple platforms.
+User
+How can I get the current utilisation of all CPUs and cores with java?
+ChatGPT
+
+To get the current utilization of all CPUs and cores in Java, you typically need to use a third-party library since Java's standard library does not provide this functionality. One commonly used library for this purpose is OSHI (Operating System and Hardware Information).
+
+Here's an example of how you might use OSHI to get the current utilization of all CPUs and cores:
+
+java
+
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.HardwareAbstractionLayer;
+
+public class CpuUtilization {
+    public static void main(String[] args) {
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hal = si.getHardware();
+        CentralProcessor processor = hal.getProcessor();
+
+        // Get previous ticks
+        long[] prevTicks = processor.getSystemCpuLoadTicks();
+        // Wait a second to get current ticks
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // Get current ticks
+        long[] ticks = processor.getSystemCpuLoadTicks();
+
+        long user = ticks[CentralProcessor.TickType.USER.getIndex()] - prevTicks[CentralProcessor.TickType.USER.getIndex()];
+        long nice = ticks[CentralProcessor.TickType.NICE.getIndex()] - prevTicks[CentralProcessor.TickType.NICE.getIndex()];
+        long sys = ticks[CentralProcessor.TickType.SYSTEM.getIndex()] - prevTicks[CentralProcessor.TickType.SYSTEM.getIndex()];
+        long idle = ticks[CentralProcessor.TickType.IDLE.getIndex()] - prevTicks[CentralProcessor.TickType.IDLE.getIndex()];
+        long iowait = ticks[CentralProcessor.TickType.IOWAIT.getIndex()] - prevTicks[CentralProcessor.TickType.IOWAIT.getIndex()];
+        long irq = ticks[CentralProcessor.TickType.IRQ.getIndex()] - prevTicks[CentralProcessor.TickType.IRQ.getIndex()];
+        long softirq = ticks[CentralProcessor.TickType.SOFTIRQ.getIndex()] - prevTicks[CentralProcessor.TickType.SOFTIRQ.getIndex()];
+        long totalCpu = user + nice + sys + idle + iowait + irq + softirq;
+
+        // Calculate the CPU utilization
+        double utilization = 100d * (totalCpu - idle) / totalCpu;
+
+        System.out.println("CPU Utilization: " + utilization + "%");
+    }
+}
+
+This example calculates the overall CPU utilization over a one-second period. OSHI can also provide per-core CPU utilization using methods like getProcessorCpuLoadBetweenTicks(). To use OSHI, make sure to add it as a dependency in your project's build configuration (e.g., in your Maven pom.xml or Gradle build.gradle file).
+
+Please note that CPU utilization is a complex metric that varies rapidly over time, so the result given by any method will be an approximation over the period of measurement.
+User
+How can I get the current utilisation of the gpu with java?
+ChatGPT
+
+Getting the current utilization of the GPU is not something that Java supports directly through its standard APIs due to its high-level and platform-independent nature. Typically, you would need to rely on platform-specific tools or libraries that can interface with the GPU drivers to retrieve such information.
+
+If you need to obtain GPU utilization in a Java application, here are a few approaches you could consider:
+
+    JNI/JNA with Native Libraries: Use Java Native Interface (JNI) or Java Native Access (JNA) to interface with native libraries provided by the GPU manufacturers (such as NVIDIA's NVML or AMD's ADL) that can report on GPU utilization.
+
+    Third-party Libraries: Use a third-party library, if available, that provides Java bindings to the aforementioned native libraries.
+
+    System Commands: Execute system commands that provide GPU utilization and parse the output, similar to how you might obtain CPU or memory usage information. For example, on Linux, you can use the nvidia-smi command for NVIDIA GPUs.
+
+    OSHI: While OSHI provides extensive hardware information, as of my last update in April 2023, it did not have the capability to report GPU utilization specifically. This may change in the future, so it's worth checking the latest OSHI documentation or release notes.
+
+Here is a conceptual example of how you might execute a system command to get GPU utilization on a Linux system with NVIDIA GPUs:
+
+java
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class GPUUtilization {
+    public static void main(String[] args) {
+        try {
+            String line;
+            Process p = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits");
+            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((line = input.readLine()) != null) {
+                System.out.println("GPU Utilization: " + line + "%");
+            }
+            input.close();
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+    }
+}
+
+This code executes the nvidia-smi command, which is specific to NVIDIA GPUs, to get the GPU utilization percentage. The output is then parsed and printed to the console.
+
+Executing system commands can be a security risk if not handled carefully, especially when incorporating user input. Always validate and sanitize inputs to avoid security vulnerabilities such as command injection.
+
+For more advanced GPU utilization tracking, especially across different GPU manufacturers and operating systems, you would typically need a specialized monitoring tool or library designed for that purpose.
+User
+How can I get the current utilisation of the network with java?
+ChatGPT
+
+To get the current network utilization, such as bandwidth usage or throughput, Java does not offer a built-in API. However, you can use the NetworkInterface class to get some basic information about the network interfaces, like the number of bytes transmitted and received, which can be used to calculate the network utilization over a period of time.
+
+Here's a basic example that demonstrates how to use the NetworkInterface class to calculate network usage:
+
+java
+
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
+public class NetworkUtilization {
+    public static void main(String[] args) throws InterruptedException {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface ni = interfaces.nextElement();
+                if (ni.isUp() && !ni.isLoopback()) {
+                    long previousBytesReceived = ni.getInterfaceAddresses().get(0).getAddress().isAnyLocalAddress() ? 0 : ni.getInetAddresses().nextElement().getAddress();
+                    long previousBytesSent = ni.getInterfaceAddresses().get(0).getAddress().isAnyLocalAddress() ? 0 : ni.getInetAddresses().nextElement().getAddress();
+                    // Wait for a second
+                    Thread.sleep(1000);
+                    long bytesReceived = ni.getInterfaceAddresses().get(0).getAddress().isAnyLocalAddress() ? 0 : ni.getInetAddresses().nextElement().getAddress();
+                    long bytesSent = ni.getInterfaceAddresses().get(0).getAddress().isAnyLocalAddress() ? 0 : ni.getInetAddresses().nextElement().getAddress();
+
+                    System.out.println("Interface: " + ni.getName());
+                    System.out.println("Bytes Received: " + (bytesReceived - previousBytesReceived));
+                    System.out.println("Bytes Sent: " + (bytesSent - previousBytesSent));
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+This code snippet has a problem: the NetworkInterface class does not provide a direct way to get the number of bytes sent or received by an interface. The above code is conceptual and does not actually compile or work because getInetAddresses().nextElement().getAddress() does not return a byte count.
+
+Instead, you can use the getHardwareAddress() method to get the MAC address, but for actual byte counts, you would need to rely on platform-specific commands (such as netstat on Windows or ifconfig/ip on Unix-like systems) and parse their output, or use a third-party library that can provide this information.
+
+For example, you might execute a command like this on Unix-like systems:
+
+java
+
+String[] cmd = { "/bin/sh", "-c", "ifconfig eth0 | grep 'RX bytes'" };
+
+Or this on Windows:
+
+java
+
+String cmd = "netstat -e";
+
+Then you would execute and parse the output to get the byte counts. Calculating the utilization would then involve taking two measurements a set time apart, subtracting the earlier measurement from the later one, and dividing by the time interval to get bytes per second.
+
+Please note that accurately measuring network utilization in Java is non-trivial and might be better served by specialized network monitoring tools or libraries.
+User
+How can I get the current utilisation of all hard drives with java?
+ChatGPT
+
+Monitoring the current utilization of hard drives, in terms of read/write operations or disk queue length, is not directly supported in the standard Java API. However, you can use the Java NIO file package to get some basic information about the free space and total space of the drives. For more detailed statistics like current read/write operations, you would need to use a third-party library or invoke system-specific commands.
+
+Here's a simple example using Java NIO to get the free and total space:
+
+java
+
+import java.io.IOException;
+import java.nio.file.FileStore;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+
+public class DiskUtilization {
+
+    public static void main(String[] args) {
+        for (Path root : FileSystems.getDefault().getRootDirectories()) {
+            try {
+                FileStore store = root.getFileSystem().getFileStores().iterator().next();
+                System.out.println("Drive: " + store.name());
+                System.out.println("Type: " + store.type());
+                System.out.println("Total space: " + store.getTotalSpace());
+                System.out.println("Usable space: " + store.getUsableSpace());
+                System.out.println("Free space: " + store.getUnallocatedSpace());
+                System.out.println();
+            } catch (IOException e) {
+                System.err.println("Error querying drive: " + root);
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+For more detailed metrics, such as disk read/write bytes per second, you would typically use a platform-specific command or a third-party library like OSHI:
+
+java
+
+import oshi.SystemInfo;
+import oshi.hardware.HWDiskStore;
+import oshi.hardware.HardwareAbstractionLayer;
+
+public class DiskUtilization {
+
+    public static void main(String[] args) {
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hal = si.getHardware();
+        HWDiskStore[] diskStores = hal.getDiskStores();
+
+        for (HWDiskStore disk : diskStores) {
+            System.out.println("Disk: " + disk.getName());
+            System.out.println("Model: " + disk.getModel());
+            System.out.println("Serial: " + disk.getSerial());
+            System.out.println("Size: " + disk.getSize());
+            System.out.println("Reads: " + disk.getReads());
+            System.out.println("Writes: " + disk.getWrites());
+            System.out.println("Transfer Time: " + disk.getTransferTime()); // Time in ms
+            System.out.println();
+        }
+    }
+}
+
+In this code, disk.getReads() and disk.getWrites() give you the total number of reads and writes since the disk was started. To get the current utilization, you would have to periodically check these numbers within an interval and calculate the difference.
+
+To use OSHI, you will need to add it as a dependency in your project. It provides a high-level API to query hardware information, and it works across multiple platforms.
+Create settings section to select which info to be shown. Use the default config file and if user makes changes then create new .conf file.
+
+
+
+
+
+
+
+
+
 
 Allow user to set a custom database URL in case they want to use a remote one.
 
