@@ -15,18 +15,12 @@ public class HomeDashboardService
         System.out.println(sysInfo.getOperatingSystem().getFileSystem().getFileStores().get(1).getName());
         System.out.println(sysInfo.getOperatingSystem().getFileSystem().getFileStores().get(1).getLabel());
         System.out.println(sysInfo.getOperatingSystem().getFileSystem().getFileStores().get(1).getTotalSpace());
-        System.out.println(sysInfo.getOperatingSystem().getServices().size());
-        System.out.println(sysInfo.getOperatingSystem().getSystemUptime() + " seconds");
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(0).toString());
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(1).toString());
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(2).toString());
-        System.out.println(sysInfo.getOperatingSystem().getNetworkParams().getHostName());
-        System.out.println(sysInfo.getOperatingSystem().getProcessCount());
         System.out.println(sysInfo.getOperatingSystem().getSessions().get(0).getUserName());
         System.out.println(sysInfo.getOperatingSystem().getSessions().get(1).getUserName());
         System.out.println(sysInfo.getOperatingSystem().getSessions().get(2).getUserName());
-        System.out.println(sysInfo.getOperatingSystem().getSystemBootTime());
-        System.out.println(sysInfo.getOperatingSystem().getThreadCount());
         System.out.println(sysInfo.getHardware().getComputerSystem().getManufacturer());
         System.out.println(sysInfo.getHardware().getComputerSystem().getHardwareUUID());
         System.out.println(sysInfo.getHardware().getComputerSystem().getBaseboard().getManufacturer());
@@ -73,8 +67,12 @@ public class HomeDashboardService
         System.out.println(sysInfo.getHardware().getSoundCards().size());
         System.out.println(sysInfo.getHardware().getUsbDevices(true).size());*/
         return Utils.convertObjectToJSON(OperatingSystemDetails.builder()
-                        .operatingSystemName(sysInfo.getOperatingSystem().getManufacturer() + " " + sysInfo.getOperatingSystem().getFamily() + " " + sysInfo.getOperatingSystem().getVersionInfo() + " " + sysInfo.getOperatingSystem().getBitness() + "-bit")
+                        .name(sysInfo.getOperatingSystem().getManufacturer() + " " + sysInfo.getOperatingSystem().getFamily() + " " + sysInfo.getOperatingSystem().getVersionInfo() + " " + sysInfo.getOperatingSystem().getBitness() + "-bit")
                         .numberOfUserAppsRunning(sysInfo.getOperatingSystem().getDesktopWindows(false).size())
+                        .numberOfProcessesRunning(sysInfo.getOperatingSystem().getProcessCount())
+                        .numberOfThreadsRunning(sysInfo.getOperatingSystem().getThreadCount())
+                        .uptime(Utils.getDurationInSecondsAsFormattedDaysAndHoursAndMinutes(sysInfo.getOperatingSystem().getSystemUptime()))
+                        .hostname(sysInfo.getOperatingSystem().getNetworkParams().getHostName())
                         .build());
     }
 }

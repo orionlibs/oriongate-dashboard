@@ -53,4 +53,42 @@ public class Utils
     {
         return new Gson().toJson(objectToConvert);
     }
+
+
+    public static String getDurationInSecondsAsFormattedDaysAndHoursAndMinutes(long numberOfSeconds)
+    {
+        long numberOfMinutes = numberOfSeconds / 60;
+        String formattedDuration = "";
+        if(numberOfMinutes < 60)
+        {
+            formattedDuration = Long.toString(numberOfMinutes) + " minutes";
+        }
+        else if(numberOfMinutes < 1440)
+        {
+            long numberOfHours = numberOfMinutes / 60;
+            long numberOfMinutesTemp = numberOfMinutes - (numberOfHours * 60);
+            formattedDuration = Long.toString(numberOfHours) + " hours";
+            if(numberOfMinutesTemp != 0)
+            {
+                formattedDuration += " + " + Long.toString(numberOfMinutesTemp) + " minutes";
+            }
+        }
+        else
+        {
+            long numberOfDays = numberOfMinutes / 1440;
+            long numberOfMinutesLeft = numberOfMinutes - (numberOfDays * 1440);
+            long numberOfHours = numberOfMinutesLeft / 60;
+            numberOfMinutesLeft -= numberOfHours * 60;
+            formattedDuration = Long.toString(numberOfDays) + " days";
+            if(numberOfHours != 0)
+            {
+                formattedDuration += " + " + Long.toString(numberOfHours) + " hours";
+            }
+            if(numberOfMinutesLeft != 0)
+            {
+                formattedDuration += " + " + Long.toString(numberOfMinutesLeft) + " minutes";
+            }
+        }
+        return formattedDuration;
+    }
 }

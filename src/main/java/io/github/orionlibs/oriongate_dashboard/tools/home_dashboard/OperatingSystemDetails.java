@@ -13,6 +13,10 @@ import lombok.Setter;
 @Setter
 public class OperatingSystemDetails
 {
-    private String operatingSystemName;
+    private String name;
     private int numberOfUserAppsRunning;
+    private int numberOfProcessesRunning;
+    private int numberOfThreadsRunning;
+    private String uptime;
+    private String hostname;
 }
