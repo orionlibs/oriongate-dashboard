@@ -1,6 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard.tools.home_dashboard;
 
-import java.util.Arrays;
+import io.github.orionlibs.oriongate_dashboard.utils.Utils;
 import oshi.SystemInfo;
 
 public class HomeDashboardService
@@ -17,7 +17,6 @@ public class HomeDashboardService
         System.out.println(sysInfo.getOperatingSystem().getFileSystem().getFileStores().get(1).getTotalSpace());
         System.out.println(sysInfo.getOperatingSystem().getServices().size());
         System.out.println(sysInfo.getOperatingSystem().getSystemUptime() + " seconds");
-        System.out.println(sysInfo.getOperatingSystem().getDesktopWindows(false).size() + " user apps running");
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(0).toString());
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(1).toString());
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(2).toString());
@@ -37,13 +36,13 @@ public class HomeDashboardService
         System.out.println(sysInfo.getHardware().getMemory().getTotal());
         System.out.println(sysInfo.getHardware().getGraphicsCards().get(0).getName());
         System.out.println(sysInfo.getHardware().getNetworkIFs().get(0).getName());
-        System.out.println(sysInfo.getHardware().getPowerSources().get(0).getName());*/
+        System.out.println(sysInfo.getHardware().getPowerSources().get(0).getName());
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorIdentifier().toString());
         System.out.println(sysInfo.getHardware().getProcessor().getMaxFreq());
         System.out.println(sysInfo.getHardware().getProcessor().getLogicalProcessorCount());
         System.out.println(sysInfo.getHardware().getProcessor().getSystemCpuLoad(200L));
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(0L).length);
-        /*System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[0]);
+        System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[0]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[1]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[2]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[3]);
@@ -70,9 +69,12 @@ public class HomeDashboardService
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[24]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[25]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[26]);
-        System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[27]);*/
+        System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[27]);
         System.out.println(sysInfo.getHardware().getSoundCards().size());
-        System.out.println(sysInfo.getHardware().getUsbDevices(true).size());
-        return sysInfo.getOperatingSystem().getManufacturer() + " " + sysInfo.getOperatingSystem().getFamily() + " " + sysInfo.getOperatingSystem().getVersionInfo() + " " + sysInfo.getOperatingSystem().getBitness() + "-bit";
+        System.out.println(sysInfo.getHardware().getUsbDevices(true).size());*/
+        return Utils.convertObjectToJSON(OperatingSystemDetails.builder()
+                        .operatingSystemName(sysInfo.getOperatingSystem().getManufacturer() + " " + sysInfo.getOperatingSystem().getFamily() + " " + sysInfo.getOperatingSystem().getVersionInfo() + " " + sysInfo.getOperatingSystem().getBitness() + "-bit")
+                        .numberOfUserAppsRunning(sysInfo.getOperatingSystem().getDesktopWindows(false).size())
+                        .build());
     }
 }

@@ -1,4 +1,6 @@
 $(document).ready(function ()
 {
-    $("#operating-system-name").html(homeDashboardService.getOperatingSystemDetails());
+    var operatingSystemDetails = JSON.parse(homeDashboardService.getOperatingSystemDetails());
+    $("#operating-system-name").html(operatingSystemDetails.operatingSystemName);
+    $("#number-of-user-apps-running").html(operatingSystemDetails.numberOfUserAppsRunning);
 });

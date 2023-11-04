@@ -1,5 +1,6 @@
 package io.github.orionlibs.oriongate_dashboard.utils;
 
+import com.google.gson.Gson;
 import io.github.orionlibs.oriongate_dashboard.JavaFXRunnable;
 import io.github.orionlibs.oriongate_dashboard.utils.calendar.DateTime;
 import java.net.URL;
@@ -45,5 +46,11 @@ public class Utils
     public static ZonedDateTime getCurrentZonedDatetime(ZoneId zoneID)
     {
         return ZonedDateTime.now(zoneID);
+    }
+
+
+    public static String convertObjectToJSON(Object objectToConvert)
+    {
+        return new Gson().toJson(objectToConvert);
     }
 }
