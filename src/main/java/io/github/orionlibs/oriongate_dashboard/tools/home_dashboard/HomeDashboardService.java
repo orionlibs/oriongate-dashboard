@@ -81,7 +81,7 @@ public class HomeDashboardService
 
     public String getMainHardwareDetails()
     {
-        System.out.println(sysInfo.getHardware().getGraphicsCards().get(0).getName());
+        //System.out.println(sysInfo.getHardware().getGraphicsCards().get(0).getName());
         return Utils.convertObjectToJSON(MainHardwareDetails.builder()
                         .motherboardName(sysInfo.getHardware().getComputerSystem().getBaseboard().getManufacturer())
                         .totalRAM("" + (sysInfo.getHardware().getMemory().getTotal() / (1024 * 1024 * 1024)) + "GB")

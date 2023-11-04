@@ -10,6 +10,7 @@ import java.util.Map;
 import javafx.concurrent.Worker.State;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -106,6 +107,12 @@ public class JavaFXRunnable implements Runnable
                                 }
                             }
                         });
+        webEngine.setOnAlert(event -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Alert!");
+            alert.setContentText(event.getData());
+            alert.showAndWait();
+        });
     }
 
 
