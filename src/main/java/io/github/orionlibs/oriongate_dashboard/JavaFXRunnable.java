@@ -27,17 +27,20 @@ public class JavaFXRunnable implements Runnable
     private InputStream logoHTML;
     private InputStream sidebarHTML;
     private InputStream topnavbarHTML;
+    private InputStream footerHTML;
     private String headerImportsHTMLContent;
     private String javascriptImportsHTMLContent;
     private String logoHTMLContent;
     private String sidebarHTMLContent;
     private String topnavbarHTMLContent;
+    private String footerHTMLContent;
     private WebView webComponent;
     private String htmlContent;
     private BorderPane borderPane;
 
 
-    public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
+    public JavaFXRunnable(String pagePathToLoad, String headerImportsFilePathToLoad, String javascriptImportsFilePathToLoad, String logoFilePathToLoad, String sidebarFilePathToLoad, String topnavbarFilePathToLoad, String footerFilePathToLoad,
+                    Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript) throws IOException
     {
         this.pagePathToLoad = pagePathToLoad;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -49,11 +52,13 @@ public class JavaFXRunnable implements Runnable
         logoHTML = JavaFXRunnable.class.getResourceAsStream(logoFilePathToLoad);
         sidebarHTML = JavaFXRunnable.class.getResourceAsStream(sidebarFilePathToLoad);
         topnavbarHTML = JavaFXRunnable.class.getResourceAsStream(topnavbarFilePathToLoad);
+        footerHTML = JavaFXRunnable.class.getResourceAsStream(footerFilePathToLoad);
         headerImportsHTMLContent = new String(headerImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
         javascriptImportsHTMLContent = new String(javascriptImportsHTML.readAllBytes(), Charset.forName("UTF-8"));
         logoHTMLContent = new String(logoHTML.readAllBytes(), Charset.forName("UTF-8"));
         sidebarHTMLContent = new String(sidebarHTML.readAllBytes(), Charset.forName("UTF-8"));
         topnavbarHTMLContent = new String(topnavbarHTML.readAllBytes(), Charset.forName("UTF-8"));
+        footerHTMLContent = new String(footerHTML.readAllBytes(), Charset.forName("UTF-8"));
     }
 
 
@@ -130,6 +135,7 @@ public class JavaFXRunnable implements Runnable
         htmlContent = htmlContent.replace("@@logo@@", logoHTMLContent);
         htmlContent = htmlContent.replace("@@sidebar@@", sidebarHTMLContent);
         htmlContent = htmlContent.replace("@@topnavbar@@", topnavbarHTMLContent);
+        htmlContent = htmlContent.replace("@@footer@@", footerHTMLContent);
         htmlContent = htmlContent.replace("@@current-year@@", Integer.toString(Utils.getCurrentYear()));
         return htmlContent;
     }

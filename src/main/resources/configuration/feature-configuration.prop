@@ -11,3 +11,4 @@ common.component.path.javascript.imports=/configuration/pages/common/javascript-
 common.component.path.logo=/configuration/pages/common/logo.html
 common.component.path.sidebar=/configuration/pages/common/sidebar.html
 common.component.path.topnavbar=/configuration/pages/common/topnavbar.html
+common.component.path.footer=/configuration/pages/common/footer.html

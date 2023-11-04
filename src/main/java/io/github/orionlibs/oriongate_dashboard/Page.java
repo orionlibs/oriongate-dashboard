@@ -24,6 +24,7 @@ public class Page extends JFrame
     public static String logoFilePathToLoad;
     public static String sidebarFilePathToLoad;
     public static String topnavbarFilePathToLoad;
+    public static String footerFilePathToLoad;
     private String pagePathToLoad;
     private Map<String, Object> variableNamesToObjectsMapperToSetInJavaScript;
     private JavaFXRunnable currentJavaFXRunnable;
@@ -36,6 +37,7 @@ public class Page extends JFrame
         logoFilePathToLoad = MainClass.config.getProp("common.component.path.logo");
         sidebarFilePathToLoad = MainClass.config.getProp("common.component.path.sidebar");
         topnavbarFilePathToLoad = MainClass.config.getProp("common.component.path.topnavbar");
+        footerFilePathToLoad = MainClass.config.getProp("common.component.path.footer");
         javafxPanel = new JFXPanel();
         mainPanel = new JPanel();
         javaScriptConsoleListener = new FrontEndLogger();
@@ -73,7 +75,7 @@ public class Page extends JFrame
 
     public void loadJavaFXScene() throws IOException
     {
-        currentJavaFXRunnable = new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
+        currentJavaFXRunnable = new JavaFXRunnable(pagePathToLoad, headerImportsFilePathToLoad, javascriptImportsFilePathToLoad, logoFilePathToLoad, sidebarFilePathToLoad, topnavbarFilePathToLoad, footerFilePathToLoad, variableNamesToObjectsMapperToSetInJavaScript);
         Platform.runLater(currentJavaFXRunnable);
     }
 
