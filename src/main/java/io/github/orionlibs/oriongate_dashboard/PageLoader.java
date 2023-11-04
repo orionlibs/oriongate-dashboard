@@ -10,9 +10,5 @@ public class PageLoader
         {
             PageSetup.loadHomeDashboard();
         }
-        else if("page2".equals(pageID))
-        {
-            PageSetup.loadPage2();
-        }
     }
 }
