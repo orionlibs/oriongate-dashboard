@@ -75,3 +75,75 @@ $(document).ready(function()
         pageLoader.loadPage("homeDashboard");
     });
 });
+
+
+var common =
+{
+    convertJavaListToArray : function(javaList)
+    {
+        const array = [];
+
+        for(var i = 0; i < javaList.size(); i++)
+        {
+            array[i] = javaList.get(i)
+        }
+
+        return array;
+    }
+}
+
+
+var oriongateCharts =
+{
+    buildDonutChartWith2Elements : function(chartID, valueArray, chartLabels)
+    {
+        var options =
+        {
+            series: valueArray,
+            colors: ["#198fed", "#32ab13"],
+            labels: chartLabels,
+            plotOptions:
+            {
+                pie:
+                {
+                    donut:
+                    {
+                        labels:
+                        {
+                            show: true,
+                            total:
+                            {
+                                showAlways: true,
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            chart:
+            {
+                foreColor: 'rgba(255, 255, 255, 0.65)',
+                //height: 380,
+                type: 'donut',
+            },
+            responsive:
+            [{
+                breakpoint: 480,
+                options:
+                {
+                    chart:
+                    {
+                        height: 360
+                    },
+                    legend:
+                    {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        var chart = new ApexCharts(document.querySelector(chartID), options);
+        chart.render();
+    }
+}

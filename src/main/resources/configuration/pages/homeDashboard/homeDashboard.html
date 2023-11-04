@@ -71,8 +71,8 @@
                         <thead class="table-light">
                         <tr>
                             <th>Motherboard</th>
-                            <th>Total RAM</th>
-                            <th>Free RAM</th>
+                            <th>CPU</th>
+                            <th>CPU Cores</th>
                             <th>GPUs</th>
                         </tr>
                         </thead>
@@ -81,12 +81,21 @@
                         <tbody>
                         <tr>
                             <td id="motherboard-name"></td>
-                            <td id="total-RAM"></td>
-                            <td id="free-RAM"></td>
+                            <td id="cpu-name"></td>
+                            <td id="cpu-cores"></td>
                             <td id="number-of-graphics-cards"></td>
                         </tr>
                         </tbody>
                     </table>
+                </div>
+
+
+                <div class="row row-cols-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="ram-chart" aria-label="RAM" aria-hidden="false"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

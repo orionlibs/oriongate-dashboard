@@ -1,6 +1,8 @@
 package io.github.orionlibs.oriongate_dashboard.tools.home_dashboard;
 
 import io.github.orionlibs.oriongate_dashboard.utils.Utils;
+import java.util.ArrayList;
+import java.util.List;
 import oshi.SystemInfo;
 
 public class HomeDashboardService
@@ -32,11 +34,7 @@ public class HomeDashboardService
 
         System.out.println(sysInfo.getHardware().getNetworkIFs().get(0).getName());
         System.out.println(sysInfo.getHardware().getPowerSources().get(0).getName());
-        System.out.println(sysInfo.getHardware().getProcessor().getProcessorIdentifier().toString());
-        System.out.println(sysInfo.getHardware().getProcessor().getMaxFreq());
-        System.out.println(sysInfo.getHardware().getProcessor().getLogicalProcessorCount());
         System.out.println(sysInfo.getHardware().getProcessor().getSystemCpuLoad(200L));
-        System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(0L).length);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[0]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[1]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[2]);
@@ -64,9 +62,7 @@ public class HomeDashboardService
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[24]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[25]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[26]);
-        System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[27]);
-        System.out.println(sysInfo.getHardware().getSoundCards().size());
-        System.out.println(sysInfo.getHardware().getUsbDevices(true).size());*/
+        System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[27]);*/
         return Utils.convertObjectToJSON(OperatingSystemDetails.builder()
                         .name(sysInfo.getOperatingSystem().getManufacturer() + " " + sysInfo.getOperatingSystem().getFamily() + " " + sysInfo.getOperatingSystem().getVersionInfo() + " " + System.getProperty("os.arch"))
                         .username(System.getProperty("user.name"))
@@ -81,12 +77,34 @@ public class HomeDashboardService
 
     public String getMainHardwareDetails()
     {
-        //System.out.println(sysInfo.getHardware().getGraphicsCards().get(0).getName());
         return Utils.convertObjectToJSON(MainHardwareDetails.builder()
                         .motherboardName(sysInfo.getHardware().getComputerSystem().getBaseboard().getManufacturer())
-                        .totalRAM("" + (sysInfo.getHardware().getMemory().getTotal() / (1024 * 1024 * 1024)) + "GB")
-                        .freeRAM("" + (sysInfo.getHardware().getMemory().getAvailable() / (1024 * 1024 * 1024)) + "GB")
+                        .cpuName(sysInfo.getHardware().getProcessor().getProcessorIdentifier().getName())
+                        .numberOfCPUCores(sysInfo.getHardware().getProcessor().getLogicalProcessorCount())
+                        //.totalRAM("" + (sysInfo.getHardware().getMemory().getTotal() / (1024 * 1024 * 1024)) + "GB")
+                        //.freeRAM("" + (sysInfo.getHardware().getMemory().getAvailable() / (1024 * 1024 * 1024)) + "GB")
                         .numberOfGraphicsCards(sysInfo.getHardware().getGraphicsCards().size())
                         .build());
+    }
+
+
+    public List<Integer> getRAMValuesForChart()
+    {
+        List<Integer> ramDetails = new ArrayList<>();
+        long totalRAM = sysInfo.getHardware().getMemory().getTotal();
+        long freeRAM = sysInfo.getHardware().getMemory().getAvailable();
+        long usedRAM = totalRAM - freeRAM;
+        ramDetails.add((int)(freeRAM / (1024 * 1024 * 1024)));
+        ramDetails.add((int)(usedRAM / (1024 * 1024 * 1024)));
+        return ramDetails;
+    }
+
+
+    public List<String> getRAMLabelsForChart()
+    {
+        List<String> ramDetails = new ArrayList<>();
+        ramDetails.add("Free RAM (in GB)");
+        ramDetails.add("Used RAM (in GB)");
+        return ramDetails;
     }
 }

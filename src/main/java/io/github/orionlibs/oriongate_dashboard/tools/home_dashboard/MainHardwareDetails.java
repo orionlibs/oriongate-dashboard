@@ -14,7 +14,7 @@ import lombok.Setter;
 public class MainHardwareDetails
 {
     private String motherboardName;
-    private String totalRAM;
-    private String freeRAM;
+    private String cpuName;
+    private int numberOfCPUCores;
     private int numberOfGraphicsCards;
 }

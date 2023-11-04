@@ -1,4 +1,61 @@
-Show operating system name and version, bits, OS icon, kernel, uptime, number of packages installed, screen resolution, CPU and utilisation, RAM, GPU, battery left, network, username, HDDs. Create charts for utilisation.
+Create settings page:
+--set database URL and give instructions to run the DDL command. Create a switch to switch between the local SQLite and the remote database. Before the system makes any database calls, it will check this config.
+--set default currency.
+
+
+Create page people directory with manual entry or by CSV/JSON. It needs name, role, phone, email, avatar.
+
+
+Create page projects.
+--It shows the list of projects.
+--It shows button "create project" which opens a subpage with a form:
+0. **project ID** unique (button to autogenerate one)
+1. **Project Name**: A concise title for the project.
+2. **Project Description**: A detailed explanation of what the project entails.
+3. **Project Manager/Owner**: The person responsible for the project's execution.
+
+Once a project is created it will redirect to the project details page (needs project ID) which shows:
+--details. Allow change of details.
+--logo.
+12. **Status**: Current phase or stage of the project (e.g., planning, in progress, on hold, completed). Allow to change status.
+16. **File Attachments**: Any documents, images, or files relevant to the project. Files will be saved in the database as blobs.
+18. **Approval Status**: Whether the project has been approved, pending, or rejected. Allow change.
+
+In the home dashboard show the size of the people directory and the list of projects (ID, name, status, approval) with links to their details page.
+
+--a "create project charter" button which opens the new subpage with existing charter or create/edit/delete/print/save-to-file.
+--create project charter subpage with a form:
+0: **project ID**.
+1. **Project name**: The official name of the project.
+2. **Project Sponsor**: The person or group who provides the financial resources for the project. Search in the people directory or Form with multiple people: personID, name, description, phone, email, address.
+3. **Project Manager**: The individual assigned to lead the project. Search in the people directory or Form with personID, name, 
+4. **Charter Purpose**: A brief statement about the intent of the charter.
+5. **Project Objectives**: Clear, measurable outcomes the project is intended to achieve.
+6. **Scope Statement**: Defines the project boundaries, including what is and is not part of the project.
+7. **Business Case**: Justification for the project, including financial or strategic benefits.
+8. **Benefits**: Expected advantages that the project will provide to the organization.
+9. **Budget Summary**: An overview of the project budget.
+10. **Major Deliverables**: Key outputs the project will produce.
+11. **Milestones**: Major events, presentations, or deliverables dates.
+12. **Risks and Issues**: Identified risks that could impact the project and any current issues.
+13. **Dependencies**: External projects, systems, or decisions the project depends on.
+14. **Constraints**: Limitations that must be considered, such as budget, time, or resources.
+15. **Assumptions**: Statements assumed to be true for planning purposes.
+16. **Stakeholders**: List of individuals, groups, or organizations affected by the project. Add people or just description.
+17. **Project Organization**: A chart or description of the organizational structure of the project team. Use the people directory. Create an organisational chart builder.
+18. **Communication Plan**: How information will be disseminated to stakeholders.
+19. **Approval Signatures**: Signatures of the project sponsor, key stakeholders, and sometimes the project manager, indicating agreement with the charter content. The manager can add this info or if a remote database is used then give the option to send email to the people that need to approve.
+5. **Start Date**: The date when the project is scheduled to begin.
+6. **End Date**: The anticipated date for the project's completion.
+15. **Resource Allocation**: What resources (like rooms, equipment, software) are needed.
+11. **Priority**: Significance of the project compared to other initiatives.
+17. **Notes/Comments**: Additional information or remarks about the project.
+
+
+
+
+
+Show kernel, number of packages installed, screen resolution, CPU and utilisation, RAM, GPU, battery left, network, username, HDDs. Create charts for utilisation.
 How can I get the operating system name with java?
 ChatGPT
 
