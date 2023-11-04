@@ -19,7 +19,7 @@ public class TestPage extends Page
 
     public TestPage() throws IOException, InterruptedException
     {
-        super("/configuration/pages/home/home.html", variableNamesToObjectsMapperToSetInJavaScript);
+        super("/configuration/pages/test/page1.html", variableNamesToObjectsMapperToSetInJavaScript);
     }
 
 

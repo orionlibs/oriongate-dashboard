@@ -4,14 +4,14 @@ import java.io.IOException;
 
 public class PageSetup
 {
-    public static void loadHomePage() throws IOException
+    public static void loadPage1() throws IOException, InterruptedException
     {
-        InitialSetup.homePage.setNewScene(MainClass.config.getProp("page.path.home"));
+        InitialSetup.mainPage.setNewScene(MainClass.config.getProp("page.path.home"));
     }
 
 
-    public static void loadHome2Page() throws IOException
+    public static void loadPage2() throws IOException, InterruptedException
     {
-        InitialSetup.homePage.setNewScene(MainClass.config.getProp("page.path.home2"));
+        InitialSetup.mainPage.setNewScene(MainClass.config.getProp("page.path.home2"));
     }
 }

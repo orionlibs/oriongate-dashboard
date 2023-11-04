@@ -1,12 +1,11 @@
 package io.github.orionlibs.oriongate_dashboard;
 
-import io.github.orionlibs.oriongate_dashboard.tools.home.HomePage;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
 
 public class InitialSetup
 {
-    public static HomePage homePage;
+    public static Page mainPage;
 
 
     public static void loadHomePageAsBootstrapPage()
@@ -18,8 +17,10 @@ public class InitialSetup
             {
                 try
                 {
-                    homePage = new HomePage();
-                    homePage.setVisible(true);
+                    mainPage = new Page();
+                    mainPage.setPagePathToLoad(MainClass.config.getProp("page.path.home"));
+                    mainPage.loadJavaFXScene();
+                    mainPage.setVisible(true);
                 }
                 catch(IOException | InterruptedException e)
                 {

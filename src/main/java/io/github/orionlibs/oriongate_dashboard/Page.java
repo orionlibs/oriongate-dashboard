@@ -42,8 +42,9 @@ public class Page extends JFrame
         pageLoader = new PageLoader();
     }
 
-    public Page()
+    public Page() throws IOException
     {
+        initSwingComponents();
     }
 
 
@@ -87,8 +88,12 @@ public class Page extends JFrame
     }
 
 
-    public void setNewScene(String newPagePathToLoad)
+    public void setNewScene(String newPagePathToLoad) throws IOException, InterruptedException
     {
+        if(currentJavaFXRunnable == null)
+        {
+            loadJavaFXScene();
+        }
         currentJavaFXRunnable.setNewScene(newPagePathToLoad);
     }
 

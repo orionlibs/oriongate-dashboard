@@ -4,15 +4,15 @@ import java.io.IOException;
 
 public class PageLoader
 {
-    public void loadPage(String pageID) throws IOException
+    public void loadPage(String pageID) throws IOException, InterruptedException
     {
-        if("home".equals(pageID))
+        if("page1".equals(pageID))
         {
-            PageSetup.loadHomePage();
+            PageSetup.loadPage1();
         }
-        else if("home2".equals(pageID))
+        else if("page2".equals(pageID))
         {
-            PageSetup.loadHome2Page();
+            PageSetup.loadPage2();
         }
     }
 }
