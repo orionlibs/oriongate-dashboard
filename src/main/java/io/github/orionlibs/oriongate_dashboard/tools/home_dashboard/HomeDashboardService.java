@@ -5,9 +5,17 @@ import oshi.SystemInfo;
 
 public class HomeDashboardService
 {
+    private SystemInfo sysInfo;
+
+
+    public HomeDashboardService()
+    {
+        this.sysInfo = new SystemInfo();
+    }
+
+
     public String getOperatingSystemDetails()
     {
-        SystemInfo sysInfo = new SystemInfo();
         /*System.out.println(sysInfo.getOperatingSystem().getFileSystem().getFileStores().size());
         System.out.println(sysInfo.getOperatingSystem().getFileSystem().getFileStores().get(0).getName());
         System.out.println(sysInfo.getOperatingSystem().getFileSystem().getFileStores().get(0).getLabel());
@@ -21,14 +29,7 @@ public class HomeDashboardService
         System.out.println(sysInfo.getOperatingSystem().getSessions().get(0).getUserName());
         System.out.println(sysInfo.getOperatingSystem().getSessions().get(1).getUserName());
         System.out.println(sysInfo.getOperatingSystem().getSessions().get(2).getUserName());
-        System.out.println(sysInfo.getHardware().getComputerSystem().getManufacturer());
-        System.out.println(sysInfo.getHardware().getComputerSystem().getHardwareUUID());
-        System.out.println(sysInfo.getHardware().getComputerSystem().getBaseboard().getManufacturer());
-        System.out.println(sysInfo.getHardware().getComputerSystem().getBaseboard().getModel());
-        System.out.println(sysInfo.getHardware().getComputerSystem().getModel());
-        System.out.println(sysInfo.getHardware().getComputerSystem().getFirmware().getName());
-        System.out.println(sysInfo.getHardware().getMemory().getTotal());
-        System.out.println(sysInfo.getHardware().getGraphicsCards().get(0).getName());
+
         System.out.println(sysInfo.getHardware().getNetworkIFs().get(0).getName());
         System.out.println(sysInfo.getHardware().getPowerSources().get(0).getName());
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorIdentifier().toString());
@@ -67,12 +68,25 @@ public class HomeDashboardService
         System.out.println(sysInfo.getHardware().getSoundCards().size());
         System.out.println(sysInfo.getHardware().getUsbDevices(true).size());*/
         return Utils.convertObjectToJSON(OperatingSystemDetails.builder()
-                        .name(sysInfo.getOperatingSystem().getManufacturer() + " " + sysInfo.getOperatingSystem().getFamily() + " " + sysInfo.getOperatingSystem().getVersionInfo() + " " + sysInfo.getOperatingSystem().getBitness() + "-bit")
+                        .name(sysInfo.getOperatingSystem().getManufacturer() + " " + sysInfo.getOperatingSystem().getFamily() + " " + sysInfo.getOperatingSystem().getVersionInfo() + " " + System.getProperty("os.arch"))
+                        .username(System.getProperty("user.name"))
                         .numberOfUserAppsRunning(sysInfo.getOperatingSystem().getDesktopWindows(false).size())
                         .numberOfProcessesRunning(sysInfo.getOperatingSystem().getProcessCount())
                         .numberOfThreadsRunning(sysInfo.getOperatingSystem().getThreadCount())
                         .uptime(Utils.getDurationInSecondsAsFormattedDaysAndHoursAndMinutes(sysInfo.getOperatingSystem().getSystemUptime()))
                         .hostname(sysInfo.getOperatingSystem().getNetworkParams().getHostName())
+                        .build());
+    }
+
+
+    public String getMainHardwareDetails()
+    {
+        System.out.println(sysInfo.getHardware().getGraphicsCards().get(0).getName());
+        return Utils.convertObjectToJSON(MainHardwareDetails.builder()
+                        .motherboardName(sysInfo.getHardware().getComputerSystem().getBaseboard().getManufacturer())
+                        .totalRAM("" + (sysInfo.getHardware().getMemory().getTotal() / (1024 * 1024 * 1024)) + "GB")
+                        .freeRAM("" + (sysInfo.getHardware().getMemory().getAvailable() / (1024 * 1024 * 1024)) + "GB")
+                        .numberOfGraphicsCards(sysInfo.getHardware().getGraphicsCards().size())
                         .build());
     }
 }

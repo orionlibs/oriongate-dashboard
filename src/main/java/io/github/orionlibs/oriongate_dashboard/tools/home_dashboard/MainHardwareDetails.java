@@ -11,13 +11,10 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class OperatingSystemDetails
+public class MainHardwareDetails
 {
-    private String name;
-    private String username;
-    private int numberOfUserAppsRunning;
-    private int numberOfProcessesRunning;
-    private int numberOfThreadsRunning;
-    private String uptime;
-    private String hostname;
+    private String motherboardName;
+    private String totalRAM;
+    private String freeRAM;
+    private int numberOfGraphicsCards;
 }
