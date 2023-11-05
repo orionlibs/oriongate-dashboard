@@ -28,13 +28,8 @@ public class HomeDashboardService
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(0).toString());
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(1).toString());
         System.out.println(sysInfo.getOperatingSystem().getInternetProtocolStats().getConnections().get(2).toString());
-        System.out.println(sysInfo.getOperatingSystem().getSessions().get(0).getUserName());
-        System.out.println(sysInfo.getOperatingSystem().getSessions().get(1).getUserName());
-        System.out.println(sysInfo.getOperatingSystem().getSessions().get(2).getUserName());
 
         System.out.println(sysInfo.getHardware().getNetworkIFs().get(0).getName());
-        System.out.println(sysInfo.getHardware().getPowerSources().get(0).getName());
-        System.out.println(sysInfo.getHardware().getProcessor().getSystemCpuLoad(200L));
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[0]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[1]);
         System.out.println(sysInfo.getHardware().getProcessor().getProcessorCpuLoad(200L)[2]);
@@ -81,8 +76,6 @@ public class HomeDashboardService
                         .motherboardName(sysInfo.getHardware().getComputerSystem().getBaseboard().getManufacturer())
                         .cpuName(sysInfo.getHardware().getProcessor().getProcessorIdentifier().getName())
                         .numberOfCPUCores(sysInfo.getHardware().getProcessor().getLogicalProcessorCount())
-                        //.totalRAM("" + (sysInfo.getHardware().getMemory().getTotal() / (1024 * 1024 * 1024)) + "GB")
-                        //.freeRAM("" + (sysInfo.getHardware().getMemory().getAvailable() / (1024 * 1024 * 1024)) + "GB")
                         .numberOfGraphicsCards(sysInfo.getHardware().getGraphicsCards().size())
                         .build());
     }
